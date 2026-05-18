@@ -63,7 +63,7 @@ def landing(
     if cookie and auth.lookup_session(db, cookie) is not None:
         return RedirectResponse("/me", status_code=status.HTTP_303_SEE_OTHER)
     return _templates(request).TemplateResponse(
-        "landing.html", {"request": request}
+        request, "landing.html"
     )
 
 
@@ -115,9 +115,9 @@ def register(
     qr = qr_data_url(handle_url)
 
     html = _templates(request).TemplateResponse(
+        request,
         "registered.html",
         {
-            "request": request,
             "handle": handle,
             "display_name": name,
             "handle_url": handle_url,
@@ -146,19 +146,18 @@ def login(
 
 def _login_failed(request: Request, code: int) -> HTMLResponse:
     return _templates(request).TemplateResponse(
+        request,
         "login_failed.html",
-        {"request": request, "message": "Unknown or revoked handle."},
+        {"message": "Unknown or revoked handle."},
         status_code=code,
     )
 
 
 def _too_many_attempts(request: Request) -> HTMLResponse:
     return _templates(request).TemplateResponse(
+        request,
         "login_failed.html",
-        {
-            "request": request,
-            "message": "Too many failed attempts. Please wait a few minutes and try again.",
-        },
+        {"message": "Too many failed attempts. Please wait a few minutes and try again."},
         status_code=status.HTTP_429_TOO_MANY_REQUESTS,
     )
 
@@ -197,9 +196,9 @@ def me(
     attempted = sum(1 for p in personal if p.attempted)
     total_score = sum(p.best_score for p in personal if p.best_score is not None)
     return _templates(request).TemplateResponse(
+        request,
         "me.html",
         {
-            "request": request,
             "handle": handle,
             "display_name": row["display_name"] if row else "?",
             "personal": personal,

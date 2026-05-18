@@ -51,8 +51,9 @@ def request_hint(
     gate = hint_mod.gate_state(db, handle=handle, exercise_slug=detail.slug)
     if not gate.allowed:
         return request.app.state.templates.TemplateResponse(
+            request,
             "hint_blocked.html",
-            {"request": request, "handle": handle, "gate": gate, "submission_id": submission_id, "exercise_slug": detail.slug},
+            {"handle": handle, "gate": gate, "submission_id": submission_id, "exercise_slug": detail.slug},
             status_code=status.HTTP_403_FORBIDDEN,
         )
 
@@ -64,8 +65,9 @@ def request_hint(
         )
     except llm_mod.LLMError as e:
         return request.app.state.templates.TemplateResponse(
+            request,
             "hint_unavailable.html",
-            {"request": request, "handle": handle, "transient": e.transient, "submission_id": submission_id, "exercise_slug": detail.slug},
+            {"handle": handle, "transient": e.transient, "submission_id": submission_id, "exercise_slug": detail.slug},
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
 
@@ -77,9 +79,9 @@ def request_hint(
         ip=request.client.host if request.client else "?",
     )
     return request.app.state.templates.TemplateResponse(
+        request,
         "hint_response.html",
         {
-            "request": request,
             "handle": handle,
             "hint": hint,
             "submission_id": submission_id,

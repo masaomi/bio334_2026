@@ -32,9 +32,9 @@ def leaderboard_view(
 ) -> HTMLResponse:
     entries, exercises = progress_mod.leaderboard(db, student_view=True)
     return request.app.state.templates.TemplateResponse(
+        request,
         "leaderboard.html",
         {
-            "request": request,
             "handle": handle,
             "entries": entries,
             "exercises": exercises,

@@ -53,9 +53,9 @@ def admin_dashboard(
     }
     token_usage = admin_stats.token_usage_summary(db)
     return request.app.state.templates.TemplateResponse(
+        request,
         "admin.html",
         {
-            "request": request,
             "cells": cells,
             "students": students,
             "disagreements": disagreements,
@@ -82,9 +82,9 @@ def admin_exercises(
     for it in items:
         grouped.setdefault(it.day, []).append(it)
     return request.app.state.templates.TemplateResponse(
+        request,
         "admin_exercises.html",
         {
-            "request": request,
             "groups": sorted(grouped.items()),
             "total": len(items),
             "visible_count": sum(1 for it in items if it.visible_to_students),
@@ -163,9 +163,9 @@ def admin_survey(
                 {"q": q, "kind": q["type"], "chart": chart, "data": data}
             )
     return request.app.state.templates.TemplateResponse(
+        request,
         "admin_survey.html",
         {
-            "request": request,
             "blocks": blocks,
             "total": survey_mod.total_submissions(db),
             "enabled": survey_mod.is_enabled(db),

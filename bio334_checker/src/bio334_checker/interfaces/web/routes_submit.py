@@ -157,9 +157,9 @@ def submission_detail(
 
     next_slug = _next_exercise_slug(db, row["exercise_slug"])
     return request.app.state.templates.TemplateResponse(
+        request,
         "submission_result.html",
         {
-            "request": request,
             "handle": handle,
             "row": row,
             "disagreement": disagreement,

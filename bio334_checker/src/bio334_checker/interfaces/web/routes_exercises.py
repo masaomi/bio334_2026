@@ -38,9 +38,9 @@ def list_view(
     for it in items:
         grouped.setdefault(it.day, []).append(it)
     return request.app.state.templates.TemplateResponse(
+        request,
         "exercises_list.html",
         {
-            "request": request,
             "handle": handle,
             "groups": sorted(grouped.items()),
             "filter_day": day,
@@ -78,9 +78,9 @@ def detail_view(
     prior_source = prior[0]["source_code"] if prior else ""
 
     return request.app.state.templates.TemplateResponse(
+        request,
         "exercise_detail.html",
         {
-            "request": request,
             "handle": handle,
             "ex": detail,
             "gate": gate,

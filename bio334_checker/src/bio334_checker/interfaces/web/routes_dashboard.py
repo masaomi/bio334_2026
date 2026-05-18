@@ -33,9 +33,9 @@ def dashboard(
         for p in personal
     ]
     return request.app.state.templates.TemplateResponse(
+        request,
         "dashboard.html",
         {
-            "request": request,
             "handle": handle,
             "rows": rows,
             "min_submitters": progress_mod.COHORT_MEDIAN_MIN_SUBMITTERS,

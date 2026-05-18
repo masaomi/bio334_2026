@@ -33,8 +33,9 @@ def survey_form(
             status.HTTP_404_NOT_FOUND, detail="survey not currently open"
         )
     return request.app.state.templates.TemplateResponse(
+        request,
         "survey.html",
-        {"request": request, "questions": survey.SURVEY_QUESTIONS},
+        {"questions": survey.SURVEY_QUESTIONS},
     )
 
 
@@ -56,5 +57,5 @@ async def survey_submit(
 @router.get("/survey/thanks", response_class=HTMLResponse)
 def survey_thanks(request: Request) -> HTMLResponse:
     return request.app.state.templates.TemplateResponse(
-        "survey_thanks.html", {"request": request}
+        request, "survey_thanks.html"
     )
