@@ -86,7 +86,20 @@ def create_app(
     app.state.host = host
     app.state.kc_client = kc_client
     app.state.worker: BackgroundWorker | None = None
-    app.state.admin_allowed_hosts = admin_allowed_hosts
+    # Env override: BIO334_ADMIN_ALLOWED_HOSTS extends the tuple, or "*"
+    # disables the loopback guard entirely (for deployments where the
+    # admin route is fronted by nginx allow/deny + basic auth and the
+    # backend port is not exposed to the internet).
+    import os as _os
+    _env_hosts = _os.getenv("BIO334_ADMIN_ALLOWED_HOSTS", "").strip()
+    if _env_hosts:
+        if _env_hosts == "*":
+            app.state.admin_allowed_hosts = None   # sentinel: skip the guard
+        else:
+            extra = tuple(h.strip() for h in _env_hosts.split(",") if h.strip())
+            app.state.admin_allowed_hosts = tuple(admin_allowed_hosts) + extra
+    else:
+        app.state.admin_allowed_hosts = admin_allowed_hosts
 
     @app.on_event("startup")
     async def _startup() -> None:
@@ -122,13 +135,16 @@ def create_app(
     @app.middleware("http")
     async def _admin_loopback_guard(request: Request, call_next):
         if request.url.path.startswith("/admin"):
-            client = request.client.host if request.client else ""
             allowed = request.app.state.admin_allowed_hosts
-            if client not in allowed:
-                return HTMLResponse(
-                    "/admin* is restricted to loopback.",
-                    status_code=status.HTTP_403_FORBIDDEN,
-                )
+            # `None` is the wildcard sentinel set when
+            # BIO334_ADMIN_ALLOWED_HOSTS=* — skip the guard entirely.
+            if allowed is not None:
+                client = request.client.host if request.client else ""
+                if client not in allowed:
+                    return HTMLResponse(
+                        "/admin* is restricted to loopback.",
+                        status_code=status.HTTP_403_FORBIDDEN,
+                    )
         return await call_next(request)
 
     return app
