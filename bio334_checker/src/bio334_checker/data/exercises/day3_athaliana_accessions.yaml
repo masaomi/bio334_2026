@@ -1,0 +1,130 @@
+# Day 3 — Exercise 2: Nucleotide diversity of 5 A. thaliana accessions on Chr1.
+# Source: https://gist.github.com/masaomi/1397a32c4b870f7ab7e92f479770788d
+#
+# Grading: LLM-only. The exercise needs the full Athaliana_SNPs.tgz
+# (~18 MB tarball, several million SNPs across 5 accessions) and the
+# TAIR10_chr1.fas reference (~9 MB gzipped). Neither is bundled in
+# the Python package; students download them from the course
+# materials in advance and run locally. The grader reads the code.
+
+slug: day3_athaliana_accessions
+title: Day 3, Ex 2 — π of 5 A. thaliana accessions on chromosome 1
+day: 3
+part: 1
+order_index: 2
+source_gist_url: https://gist.github.com/masaomi/1397a32c4b870f7ab7e92f479770788d
+
+description_md: |
+  ## Day 3, Exercise 2 — π of 5 A. thaliana accessions
+
+  ### Goal
+  Scale up Ex 1 from a 4-position toy example to **real data**:
+  compute nucleotide diversity (π) across 5 *Arabidopsis thaliana*
+  accessions on chromosome 1.
+
+  ### Data (download from course materials)
+  - `Athaliana_SNPs/*.txt` — one file per accession,
+    `quality_variant_<ACC>_TAIR10_Chr1.txt` format.
+  - `TAIR10_chr1.fas` — the chromosome 1 reference (length =
+    30,427,671 bp).
+
+  ### SNP file format
+  Each line of `quality_variant_XXX_TAIR10_Chr1.txt`:
+  ```
+  108 Chr1  83  T C 40  41  1 1
+  ```
+  - Column 1: line number (ignore)
+  - Column 3: SNP position (the one you need)
+  - Column 4: reference nucleotide
+  - Column 5: alternative nucleotide (the one you need)
+
+  ### Two valid approaches
+  Either works; both are graded equally:
+
+  1. **VCF-style direct**: extend Ex 1 — load each accession into a
+     `{position: alt_nt}` dict, then for each pair compute
+     pair-wise differences via XOR + mismatch rule. Divide by
+     `nC2 * L` where L = 30,427,671.
+  2. **Reconstruct + reuse**: build a multi-aligned FASTA from the
+     SNP files + reference, then reuse `calc_pi` from Day 2 P2.
+
+  ### Expected output (canonical)
+
+  ```
+  $ python3 day3_exercise2.py Athaliana_SNPs
+  Loading  Athaliana_SNPs/quality_variant_108_TAIR10_Chr1.txt
+  Loading  Athaliana_SNPs/quality_variant_139_TAIR10_Chr1.txt
+  Loading  Athaliana_SNPs/quality_variant_159_TAIR10_Chr1.txt
+  Loading  Athaliana_SNPs/quality_variant_265_TAIR10_Chr1.txt
+  Loading  Athaliana_SNPs/quality_variant_350_TAIR10_Chr1.txt
+  compare: 0, 1 diff=49723
+  compare: 0, 2 diff=268146
+  compare: 0, 3 diff=280398
+  compare: 0, 4 diff=253099
+  compare: 1, 2 diff=264772
+  compare: 1, 3 diff=277197
+  compare: 1, 4 diff=249935
+  compare: 2, 3 diff=275780
+  compare: 2, 4 diff=241002
+  compare: 3, 4 diff=274920
+  pi = 0.008002
+  ```
+
+  Your numbers will match if you use the canonical dataset.
+  Otherwise the values will differ; the rubric grades the
+  algorithm.
+
+  ### Notes
+  - **LLM-only grading**: the dataset is not bundled in the
+    checker. The grader reads your code and reasons about
+    correctness; the canonical numbers above are the reference
+    point, not a hard requirement.
+  - **L = 30,427,671** (chromosome 1 length). Do NOT use the
+    number of distinct SNP positions as L — that's a common
+    off-by-millions trap.
+  - `sorted(glob.glob(...))` ensures a deterministic accession
+    order matching the canonical (108 → 139 → 159 → 265 → 350).
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. Enumerates `quality_variant_*.txt` files in the directory
+     given on argv[1], in **sorted** order.
+  2. Parses each file: extracts position (col 3) and alternative
+     nucleotide (col 5). Whitespace split is fine — neither tabs
+     nor spaces are guaranteed.
+  3. Builds a per-accession dict of `{position: alt_nt}`.
+  4. For each unordered pair (i, j), computes pair-wise differences
+     using the same XOR + mismatch rule as Ex 1.
+  5. π = sum(pair_diffs) / nC2 / L where **L = 30,427,671**
+     (chromosome 1 length, NOT the count of SNP positions).
+  6. Prints `Loading ...` once per file, `compare: i, j diff=...`
+     once per pair, and the final `pi = <6 decimals>`.
+  7. Code runs cleanly on the real dataset.
+
+  Partial credit guidance:
+  - Algorithm correct but uses len(union(positions)) for L: 50–65.
+    Crucial conceptual mistake — flag it specifically.
+  - Skips the XOR step (only counts mismatches on shared
+    positions): 45–60. This produces a much smaller diff count.
+  - File order not deterministic and the diff= lines are shuffled
+    against canonical: 75–85. The disagreement banner is the
+    lesson on `sorted(glob.glob(...))`.
+
+  Style notes:
+  - `collections.defaultdict(dict)` per-accession works but
+    plain `dict` is simpler.
+  - `int(line.split()[2])` for position — string vs int matters
+    when sorting for plot-friendly output later.
+
+# No expected_stdout → grader skips exact-match, runs rubric only.
+
+argv: ["Athaliana_SNPs"]
+files_provided: []
+
+max_score: 100
+pass_threshold: 65   # capstone-area, slightly more lenient
+llm_floor: 35
+allow_nonzero_rc: true   # data dir may be absent on the sandbox
+timeout_s: 60            # real data is big — give it room

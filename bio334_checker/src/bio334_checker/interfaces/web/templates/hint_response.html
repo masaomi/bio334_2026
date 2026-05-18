@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Hint, level {{ hint.level }} of 3 — {{ hint.level_name }}</h2>
+
+<p>
+  <span class="pill pill--teach">Hint {{ hint.level }}/3 used</span>
+  <span class="meta">· {{ 3 - hint.level }} remaining</span>
+</p>
+
+<div class="callout callout--teach">
+  <strong>This is a nudge, not a solution.</strong>
+  Hints come from an LLM and may be wrong. Use them as starting points,
+  not as code to copy.
+</div>
+
+<section class="card" style="background: #f4f8fc; border-left: 3px solid var(--c-accent);">
+  <p style="white-space: pre-wrap; margin: 0;">{{ hint.text }}</p>
+</section>
+
+<p style="margin-top: var(--s3);">
+  <a href="/submissions/{{ submission_id }}" class="btn-primary"
+     style="display:inline-block; padding: 0.5rem var(--s2); text-decoration:none;
+            border:1px solid var(--c-accent); border-radius:4px;">
+    ← Back to your submission
+  </a>
+  &nbsp;·&nbsp;
+  <a href="/exercises/{{ exercise_slug }}" style="color: var(--c-mute);">Open the exercise</a>
+</p>
+{% endblock %}

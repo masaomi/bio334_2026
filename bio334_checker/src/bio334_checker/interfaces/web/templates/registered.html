@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Registered</h2>
+
+<p>Hello, <strong>{{ display_name }}</strong>. Your handle is:</p>
+
+<p><span class="handle">{{ handle }}</span></p>
+
+<div class="note">
+  <strong>Save your handle now</strong> via any of the three channels below.
+  Lost handle = new identity (no recovery).
+</div>
+
+<h3>1. QR code</h3>
+<div class="qr"><img src="{{ qr_data_url }}" alt="QR code for your handle URL"></div>
+
+<h3>2. Clickable URL</h3>
+<p><a href="{{ handle_url }}"><code>{{ handle_url }}</code></a></p>
+
+<h3>3. Paper memo</h3>
+<p>Write down: <code>{{ handle }}</code></p>
+
+<hr>
+<p>Disclosure: your handle and submission progress are recorded on an
+immutable chain (post-course attestation). Your display name stays in
+this app's local database and is <strong>never</strong> written to the chain.</p>
+
+<p><a href="/me">Continue to your page →</a></p>
+{% endblock %}

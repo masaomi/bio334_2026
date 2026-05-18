@@ -1,0 +1,84 @@
+# Day 2, Part 1 — Advanced Exercise 1: GC content of the A. thaliana genome.
+# Source: https://gist.github.com/masaomi/870f24db57d295eabfd0094b504c2f1b
+
+slug: day2_p1_gc_content
+title: Day 2 Part 1, Adv 1 — GC content of the A. thaliana genome
+day: 2
+part: 1
+order_index: 2
+source_gist_url: https://gist.github.com/masaomi/870f24db57d295eabfd0094b504c2f1b
+
+description_md: |
+  ## Day 2, Part 1 — Advanced Exercise 1: GC content
+
+  ### Goal
+  Read the *Arabidopsis thaliana* genome FASTA and compute the
+  **GC content**: the proportion of bases that are G or C.
+
+  $$\mathrm{GC\ content} = \frac{\#G + \#C}{\text{genome size}}$$
+
+  ### Task
+  Extend your Ex 1 (genome size) script: while iterating sequence
+  lines, also count occurrences of G and C, then divide by the
+  total nucleotide count at the end.
+
+  ### Expected output
+
+  ```
+  $ python day2_1_advanced1.py athal_genome.fa
+  Genome size = 119667750 bp
+  GC content = GC count/genome size = 0.35999748470243653
+  ```
+
+  ### Input file
+  - `athal_genome.fa` — same file as Ex 1. Provided by the checker
+    in the sandbox working directory.
+
+  ### Notes
+  - Match the canonical's capitalisation: `Genome size` (capital G)
+    on line 1, all-lowercase `gc count/genome size` inside the
+    second line's right-hand side.
+  - Pure-Python `line.count("G")` / `line.count("C")` per sequence
+    line is fastest; counting per character also works.
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. Reads `sys.argv[1]` and iterates the file line-by-line.
+  2. Skips header lines starting with `>`.
+  3. Strips the trailing newline before counting (otherwise `\n`
+     can contaminate non-G/C counts, but it cannot inflate G/C —
+     so the bug is silent on this metric).
+  4. Counts G + C and the total nucleotides.
+  5. Prints exactly the two canonical lines, with the same labels
+     and float precision.
+  6. Code runs cleanly.
+
+  Partial credit guidance:
+  - Counts only G OR only C (missing the other): 30–45.
+  - Forgets to skip header lines: 40–55 — headers contain `G` and
+    `C` letters in the gene IDs and inflate the count.
+  - Computes the correct ratio but rounds to 2-4 decimals instead
+    of printing the full float: 75–90; disagreement banner is the
+    lesson.
+
+  Style notes:
+  - `line.count("G") + line.count("C")` is the idiomatic one-liner.
+  - `(line.count("G") + line.count("C") + line.count("g") +
+    line.count("c"))` is fine if the student is being defensive
+    about case — the gist canonical assumes uppercase, but
+    case-insensitive is safer biology.
+
+expected_stdout: |
+  Genome size = 119667750 bp
+  GC content = GC count/genome size = 0.35999748470243653
+
+argv: ["athal_genome.fa"]
+files_provided: ["athal_genome.fa"]
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 30

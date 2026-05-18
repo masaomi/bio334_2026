@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+<p><a href="/exercises/{{ exercise_slug }}">← back to exercise</a></p>
+
+<h2>Hint not yet available — and that's on purpose</h2>
+<div class="callout callout--teach">
+  <strong>Hints come after some struggle, not before.</strong>
+  Research on cognitive debt: when an AI explanation arrives before you have
+  built your own working hypothesis, the explanation overwrites your thinking
+  instead of meeting it. The delay gives that hypothesis time to form, so
+  the hint then refines understanding instead of replacing it.
+</div>
+<p class="meta">{{ gate.reason }} · Failed attempts so far: {{ gate.failed_attempts }}.</p>
+{% endblock %}

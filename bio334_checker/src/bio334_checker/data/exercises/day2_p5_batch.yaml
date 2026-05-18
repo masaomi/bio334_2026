@@ -1,0 +1,100 @@
+# Day 2, Part 5 — Batch process for HMA4 region (Exercise 1 of gist).
+# Source: https://gist.github.com/masaomi/29c3325edd802eadb61a213140f33c93
+#
+# Grading: LLM-only (no expected_stdout, no input files bundled).
+# The HMA4 alignment archives (HMA4_aligned_fasta_Ahal_origin /
+# HMA4_aligned_fasta_Alyr_origin) are too large to ship in the repo;
+# students who actually want to run their script can download from
+# the gist instructions. The grader reads the code only.
+
+slug: day2_p5_batch
+title: Day 2 Part 5, Ex 1 — batch process π and Tajima's D across HMA4 genes
+day: 2
+part: 5
+order_index: 1
+source_gist_url: https://gist.github.com/masaomi/29c3325edd802eadb61a213140f33c93
+
+description_md: |
+  ## Day 2, Part 5 — Batch process
+
+  ### Goal
+  Reuse the functions from Day 2 Part 2 (`calc_pi`) and Day 2 Part 4
+  (`tajimas_d`) to compute statistics for every aligned FASTA file in
+  a directory, and emit a TSV table suitable for plotting.
+
+  ### Two implementation options
+  Either is acceptable:
+
+  1. **Shell loop** (`day2_5_exercise1.sh`): one `python …` invocation
+     per file, redirecting output.
+  2. **Python wrapper** that iterates `glob.glob("*.fasta")` and either
+     calls the per-file logic in-process (preferred) or shells out
+     via `os.system` / `subprocess.run` (acceptable but less clean).
+
+  ### Expected output shape
+  ```
+  $ python day2_5_exercise1.py HMA4_aligned_fasta_Ahal_origin > pi_ahal.dat
+  $ cat pi_ahal.dat
+  GeneID	pi	Tajimas_D
+  AT2G18750	0.00397796817625459	-2.0549496079661536
+  AT2G19010	0.0011196332539892444	-1.1786783149629096
+  ...
+  ```
+
+  ### Notes
+  - This exercise is graded by the **LLM only**. The HMA4 alignment
+    archives are not bundled in the checker — they are large, and the
+    pedagogical goal here is the batch-process pattern, not the
+    specific numbers.
+  - If you want to actually run your script, download the data from
+    the gist link above. The grader does not require running output.
+  - Use `flush=True` on `print` calls when shelling out, to keep the
+    header line ahead of the child-process output.
+
+rubric_md: |
+  Score this submission against the following criteria.
+
+  Required (full credit):
+  1. Iterates over every aligned FASTA in the input directory using
+     `glob.glob` or `os.listdir` (any clean idiom).
+  2. For each file, computes π and Tajima's D. Either:
+     - Imports `calc_pi` and `tajimas_d` from Day 2 P2 / P4 and calls
+       them in-process (preferred — DRY and faster), OR
+     - Shells out to the per-file scripts and parses stdout
+       (acceptable; flag that this is slower and more fragile).
+  3. Emits a TSV with header `GeneID\tpi\tTajimas_D` and one row per
+     gene. The `GeneID` is derived from the filename (`AT2G18750.fasta`
+     → `AT2G18750`).
+  4. Code runs cleanly when the directory exists; behaves sensibly
+     when it doesn't (clear error, not a stack trace).
+
+  Partial credit guidance:
+  - Correct logic but emits one column at a time / no TSV format:
+    55–70.
+  - Hardcodes the list of GeneIDs instead of deriving from filenames:
+    50–65 — the lesson is glob + filename munging.
+  - Uses `subprocess.run(..., capture_output=True)` and parses
+    stdout: full credit, with a feedback note that direct import is
+    cleaner.
+
+  Style notes:
+  - `os.path.basename(file)` then `.replace('.fasta', '')` is the
+    canonical idiom from the gist hint.
+  - Praise `pathlib.Path` usage if the student reaches for it.
+
+  Feedback:
+  - This exercise is about *reusing previous work*. If the student
+    reimplemented `calc_pi` from scratch instead of importing, that's
+    the main feedback point — the deliverable is the orchestration,
+    not the math.
+
+# No expected_stdout → exact-match check skipped, no bundled files.
+
+argv: ["HMA4_aligned_fasta_Ahal_origin"]
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 30

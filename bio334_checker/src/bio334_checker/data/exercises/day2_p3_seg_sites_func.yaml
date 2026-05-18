@@ -1,0 +1,103 @@
+# Day 2, Part 3 — Exercise 2: Refactor segregating-site count into functions.
+# Source: https://gist.github.com/masaomi/c5a11879a9deefccd40c57c1ba975b3a
+#
+# Same algorithm as Ex 1, refactored into load_fasta + count_seg_sites
+# functions. The output is just the final total (no per-position lines).
+# Bundled input.fa is the same 2-sequence alignment used by Ex 1.
+
+slug: day2_p3_seg_sites_func
+title: Day 2 Part 3, Ex 2 — segregating sites as load_fasta + count_seg_sites
+day: 2
+part: 3
+order_index: 2
+source_gist_url: https://gist.github.com/masaomi/c5a11879a9deefccd40c57c1ba975b3a
+
+description_md: |
+  ## Day 2, Part 3 — Exercise 2: Refactor into functions
+
+  ### Goal
+  Take the segregating-site counter from Ex 1 and split it into two
+  reusable functions.
+
+  ### Required interface
+
+  ```python
+  import sys
+
+  def load_fasta(fasta):
+      sequences = []
+      #
+      # Your code here
+      #
+      return sequences
+
+  def count_seg_sites(sequences):
+      total_seg_sites = 0
+      #
+      # Your code here
+      #
+      return total_seg_sites
+
+  sequences = load_fasta(sys.argv[1])
+  total_seg_sites = count_seg_sites(sequences)
+  print("Total segregating sites =", total_seg_sites)
+  ```
+
+  ### Expected output (for the bundled `input.fa`)
+
+  ```
+  $ python3 day2_3_exercise2.py input.fa
+  Total segregating sites = 2
+  ```
+
+  ### Notes
+  - Same command-line interface and the same numeric result as Ex 1
+    — only the structure changes. The per-position output that Ex 1
+    prints is **not** part of Ex 2's expected output; only the
+    final total line.
+  - `load_fasta` and `count_seg_sites` should each have a single
+    clear responsibility. `count_seg_sites` should not re-open or
+    re-read the file.
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. `load_fasta(path)` opens the file at `path`, skips header
+     lines starting with `>`, accumulates sequence lines with their
+     newlines stripped, and returns the list of sequences.
+  2. `count_seg_sites(sequences)` iterates positions 0..L-1,
+     collects the per-position alleles into a set or equivalent,
+     and increments the counter when the set has more than one
+     element.
+  3. The script body calls `load_fasta(sys.argv[1])` then
+     `count_seg_sites(...)`, and prints exactly
+     `Total segregating sites = 2` for the bundled 2-sequence input.
+  4. Code runs cleanly.
+
+  Partial credit guidance:
+  - Logic correct but everything inlined in `__main__` (no
+    functions): 50–65. The whole point of this exercise is the
+    function decomposition.
+  - `count_seg_sites` re-opens the file instead of taking
+    `sequences`: 55–70. Flag that the interface contract is to
+    accept the already-loaded list.
+  - Off-by-one (e.g., counts positions where the SET equals the
+    list, instead of where the set's length > 1): 50–65.
+
+  Style notes:
+  - `with open(path) as f` is more Pythonic than the explicit
+    open/close, but the template uses the explicit pattern — either
+    is fine.
+
+expected_stdout: |
+  Total segregating sites = 2
+
+argv: ["input.fa"]
+files_provided: ["input.fa"]
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 15

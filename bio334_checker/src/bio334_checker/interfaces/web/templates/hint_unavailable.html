@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+<p><a href="/submissions/{{ submission_id }}">← back to submission</a></p>
+
+<h2>Hint service unavailable</h2>
+<div class="err">
+{% if transient %}
+  The hint service is temporarily unreachable. Please try again in a moment.
+{% else %}
+  The hint service is not configured on this server. Contact the instructor.
+{% endif %}
+</div>
+<p><a href="/exercises/{{ exercise_slug }}">Back to the exercise →</a></p>
+{% endblock %}

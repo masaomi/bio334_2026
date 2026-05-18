@@ -1,0 +1,133 @@
+# Day 1, Part 2 — Two-sequence comparison (Exercise 1 of the gist).
+#
+# Source: https://gist.github.com/masaomi/b2f52f4723757d5fd1b93ed422f81923
+# (gist also contains 2 advanced exercises — mini-BLAST sliding-window
+# and reverse complement — those are separate slugs.)
+
+slug: day1_p2_seq_compare
+title: Day 1 Part 2, Ex 1 — comparing two nucleotide sequences
+day: 1
+part: 2
+order_index: 1
+source_gist_url: https://gist.github.com/masaomi/b2f52f4723757d5fd1b93ed422f81923
+
+description_md: |
+  ## Day 1, Part 2 — Exercise 1: Compare two nucleotide sequences
+
+  ### Goal
+  Understand the Python `String` object and use it to compare two
+  nucleotide sequences position-by-position.
+
+  ### Hint
+  Each character in a string can be accessed by index like a list
+  element:
+
+  ```python
+  string = "abc"
+  print(string[1])  # => b
+  ```
+
+  ### Template
+
+  ```python
+  seq1 = "ATGCATGC"   # First string
+  seq2 = "ATGGATCC"   # Second string
+
+  sequences = [seq1, seq2]
+
+  same = 0    # counter for same nucleotides at each position
+  diff = 0    # counter for different nucleotides at each position
+
+  #
+  # Your code here
+  #
+
+  print("same nucleotides : %d" % same)
+  print("differnt nucleotides : %d" % diff)
+  ```
+
+  ### Expected output
+
+  ```
+  $ python day1_2_exercise1.py
+  A A : True
+  T T : True
+  G G : True
+  C G : False
+  A A : True
+  T T : True
+  G C : False
+  C C : True
+  same nucleotides : 6
+  differnt nucleotides : 2
+  ```
+
+  ### Notes
+  - The two sequences above (`ATGCATGC` and `ATGGATCC`) are hardcoded
+    in the template; do not change them.
+  - The label in the template reads `differnt` (with no `e` between
+    `r` and `n`). This is a typo in the original template. If you fix
+    it, your output will not exactly match the canonical expected
+    output, and the grader will tell you it disagrees with the
+    canonical answer — investigate that disagreement. (This is a
+    deliberate teaching moment about LLM and exact-match limits.)
+
+rubric_md: |
+  Score this submission against the following criteria. The grader
+  should be encouraging but honest with biology master's students who
+  are new to Python.
+
+  Required (full credit):
+  1. Iterates over the two sequences position-by-position using a `for`
+     loop and an index (or `zip` / `enumerate` — any valid pattern).
+  2. For each position, compares the two characters and prints a line
+     `X Y : True` or `X Y : False` matching the canonical output.
+  3. Increments `same` when the characters match and `diff` otherwise.
+  4. Prints the final two lines with the counts (the typo `differnt`
+     OR a corrected `different` both acceptable; if the student fixed
+     the typo, note the deliberate disagreement banner is the lesson).
+  5. Code runs cleanly (exit code 0).
+
+  Partial credit guidance:
+  - Correct algorithm but wrong final counts: 50–65.
+  - Iteration absent, output hardcoded as strings (output-only fakery):
+    well below the LLM_FLOOR (≤ 30). The AND-gate then blocks the
+    submission regardless of stdout match.
+  - Off-by-one (e.g., iterates `range(len-1)` and misses last position):
+    60–75; flag the bug in feedback.
+
+  Style notes (do not penalize heavily):
+  - Using `%`-style formatting (`"%s %s : "` etc.) is what the template
+    uses; f-strings are also fine. Don't deduct for either.
+  - Single-letter variable names (`a`, `b`, `i`) are acceptable for
+    this introductory exercise.
+
+  Feedback should:
+  - Acknowledge what the student did right before pointing to issues.
+  - Reference the specific Python construct (string indexing,
+    `range(len(...))`, the `if/else` branches) when explaining.
+  - For passing submissions that produced "different" instead of
+    "differnt": explicitly call out that this is a typo in the
+    instructor's template and the grader's canonical-answer
+    disagreement is intentional pedagogy.
+
+expected_stdout: |
+  A A : True
+  T T : True
+  G G : True
+  C G : False
+  A A : True
+  T T : True
+  G C : False
+  C C : True
+  same nucleotides : 6
+  differnt nucleotides : 2
+
+argv: []
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 10

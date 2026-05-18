@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Class progress — bio334-checker{% endblock %}
+{% block body %}
+<h2>Class progress</h2>
+<p style="color:#666; font-size:0.9rem;">
+  Everyone is shown anonymously. ✓ means the student has at least one
+  passing submission on that exercise. The total score is hidden here
+  — see your own page to view your own score.
+</p>
+
+{% if entries %}
+<table style="font-size: var(--fs-sm);">
+  <thead>
+    <tr>
+      <th>Student</th>
+      {% for ex in exercises %}
+        <th class="ctr" title="{{ ex.title }}">D{{ ex.day }}P{{ ex.part }}.{{ ex.order_index }}</th>
+      {% endfor %}
+      <th class="num">Cleared</th>
+      <th class="ctr">Rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in entries %}
+    <tr{% if e.handle == handle %} class="is-you"{% endif %}>
+      <td>
+        somebody_{{ e.anon_id }}{% if e.handle == handle %}
+          <strong style="color: var(--c-teach);">(you)</strong>{% endif %}
+      </td>
+      {% for ex in exercises %}
+        <td class="ctr">
+          {% if e.cells[ex.slug] %}
+            <span style="color: var(--c-pass); font-weight:bold;">✓</span>
+          {% else %}
+            <span style="color:#cfd3d9;">·</span>
+          {% endif %}
+        </td>
+      {% endfor %}
+      <td class="num">{{ e.cleared_count }}</td>
+      <td class="ctr">
+        {% if e.medal %}
+          <span style="font-size:1.2em;" title="rank {{ e.rank }}">{{ e.medal }}</span>
+        {% elif e.rank %}
+          {{ e.rank }}
+        {% else %}
+          <span style="color: var(--c-mute);">—</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p class="meta" style="margin-top: var(--s2);">
+  Medals reward <strong>breadth</strong> (how many exercises you cleared),
+  not depth or speed. Day 1 → Day 3 ranks can shuffle freely; the bottom
+  rows on Day 1 are not the bottom rows on Day 3.
+</p>
+{% else %}
+<p>No students registered yet.</p>
+{% endif %}
+{% endblock %}

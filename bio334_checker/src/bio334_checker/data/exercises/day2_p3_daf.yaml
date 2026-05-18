@@ -1,0 +1,119 @@
+# Day 2, Part 3 — Advanced Exercise 3: Derived Allele Frequency (DAF).
+# Source: https://gist.github.com/masaomi/c5a11879a9deefccd40c57c1ba975b3a
+#
+# Grading: LLM-only. This exercise requires both an ingroup FASTA and
+# an outgroup FASTA, and the canonical numbers in the gist (MAF=0.214,
+# DAF=0.214) come from a 14-sequence ingroup that we don't bundle.
+# The pedagogical point is ancestral-vs-derived inference logic, which
+# the rubric grades directly without needing exact-match.
+
+slug: day2_p3_daf
+title: Day 2 Part 3, Adv 3 — Derived Allele Frequency (DAF) with outgroup
+day: 2
+part: 3
+order_index: 5
+source_gist_url: https://gist.github.com/masaomi/c5a11879a9deefccd40c57c1ba975b3a
+
+description_md: |
+  ## Day 2, Part 3 — Advanced Exercise 3: DAF
+
+  ### Goal
+  Use an **outgroup** sequence to identify the ancestral allele at
+  each site, and compute the **Derived Allele Frequency (DAF)** in
+  the ingroup population.
+
+  ### Background
+
+  - **Ancestral allele**: the base present in the outgroup at that
+    position. Assumed to represent the pre-mutation state.
+  - **Derived allele**: any allele in the ingroup that is NOT the
+    ancestral one. A site can have at most one derived allele in
+    this simplified setup; if it has more (the outgroup matches
+    none of the ingroup alleles, or the ingroup has > 2 alleles),
+    DAF is reported as 0 with `Derived Allele=None`.
+  - **MAF**: included for comparison with Adv 2.
+  - **Segregating site**: a position where the ingroup carries more
+    than one distinct allele.
+
+  ### Inputs
+  - `input.fa` — ingroup FASTA (path on `sys.argv[1]`)
+  - `outgroup.fa` — outgroup FASTA (path on `sys.argv[2]`), one
+    sequence of the same length as the ingroup
+
+  ### Required per-site output (one line per position)
+
+  ```
+  Position 0: not segregating, MAF=0.000, DAF=0.000, Derived Allele=None
+  ...
+  Position 7: segregating, MAF=0.214, DAF=0.214, Derived Allele=T
+  ...
+  Total segregating sites = <N>
+  Derived Allele Frequencies = [<list of per-site DAF, 0 where non-segregating>]
+  ```
+
+  ### Notes
+  - This exercise is graded by the **LLM only**: we don't bundle a
+    matched ingroup + outgroup pair, and the gist's canonical
+    numbers come from a 14-sequence ingroup we don't ship. You can
+    test your script with your own FASTA files.
+  - The rubric grades the **inference logic** (ancestral lookup,
+    derived-allele identification, fall-back to `None` on
+    ambiguity), not specific numbers.
+
+  ### Hints
+  - `collections.Counter` on the ingroup alleles at each position
+    gives the frequency table.
+  - Ancestral = outgroup base at that position. If the outgroup
+    base is not in the ingroup Counter, the ancestral allele
+    "absent from ingroup" case kicks in — set Derived=None.
+  - DAF = `frequency of (ingroup alleles != ancestral)`.
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. Reads both FASTA files (ingroup from argv[1], outgroup from
+     argv[2]).
+  2. For each position, computes:
+     - MAF (minor-allele frequency in the ingroup)
+     - DAF (frequency of non-ancestral alleles in the ingroup)
+     - Derived allele label (the non-ancestral allele if uniquely
+       identifiable; `None` otherwise)
+  3. Correctly handles the **ambiguity case** described in the
+     prompt: when the ancestral allele can't be determined from
+     the outgroup (outgroup base not present in ingroup, ambiguous
+     outgroup, etc.), output `DAF=0.000, Derived Allele=None` for
+     that site.
+  4. Emits one line per position with the canonical labels and
+     fixed-precision formatting (`%.3f` for both MAF and DAF).
+  5. Emits the final two lines: `Total segregating sites = N` and
+     `Derived Allele Frequencies = [...]`.
+  6. Code runs cleanly when both files exist.
+
+  Partial credit guidance:
+  - Treats every site as segregating (no filter): 40–55.
+  - Computes DAF as `1 - ancestral_frequency` (counts ancestral as
+    derived too): 50–65.
+  - Crashes on the "outgroup base not in ingroup" case instead of
+    falling back to `None` / `DAF=0`: 60–75. Robustness is part of
+    the point.
+  - MAF and DAF correct but `Derived Allele` label always missing:
+    65–80.
+
+  Style notes:
+  - `collections.Counter` makes the per-site frequency work
+    one-liner-clean.
+  - `Counter.most_common()` is useful for the minor-allele picker.
+  - Keep `calc_daf_at_site(ingroup_alleles, outgroup_base)` as a
+    helper function — easier to grade and easier to test.
+
+# No expected_stdout → exact-match skipped, rubric-only.
+
+argv: ["input.fa", "outgroup.fa"]
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 20

@@ -1,0 +1,45 @@
+# Sample/skeleton exercise definition. The real Day 1–3 exercises are
+# fetched from the gist URLs listed in bio334_2026_/bio334_2025_/README.md
+# and authored as separate YAML files (one per exercise).
+#
+# This file is named *.example.yaml deliberately so it can serve as a
+# template. Copy and rename to a real slug to add a new exercise.
+
+slug: day1_p1_hello
+title: Hello, world (warm-up)
+day: 1
+part: 1
+order_index: 1
+source_gist_url: null
+
+description_md: |
+  ## Warm-up: Hello, world
+
+  Write a Python program that prints exactly:
+
+      Hello, world!
+
+  Goals
+  - Confirm your Python environment is working.
+  - Get used to the submission flow.
+
+rubric_md: |
+  - Score 100 if the program prints exactly `Hello, world!` (with the
+    exclamation mark and a single trailing newline).
+  - Score 60–80 if it prints something close (e.g. extra whitespace,
+    missing exclamation mark) but is clearly attempting the task.
+  - Score 20–40 for code that runs but outputs unrelated text.
+  - Score 0 if the program does not run, or if it appears to be
+    output-only fakery (e.g. a single `print('Hello, world!')`
+    embedded inside a function that is never called and the rest of
+    the program is irrelevant).
+
+expected_stdout: "Hello, world!\n"
+argv: []
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 10

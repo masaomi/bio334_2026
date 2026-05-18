@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ ex.title }} — bio334-checker{% endblock %}
+{% block body %}
+<p><a href="/exercises">← all exercises</a></p>
+
+<h2>{{ ex.title }}</h2>
+<p class="meta">Day {{ ex.day }} · part {{ ex.part }} · revision v{{ ex.version }}
+  · Hints: {{ gate.levels_consumed }}/3 used</p>
+<p class="meta" style="border-left: 3px solid var(--c-teach); padding-left: var(--s1);">
+  Sketch your approach on paper or in your head first. Then write the code.
+  The grader is your sparring partner, not your starting point.
+</p>
+
+<section class="card exercise-description">
+  {{ ex.description_md | markdown }}
+</section>
+
+<div class="card-grid card-grid--2">
+  <details class="card">
+    <summary><strong>Rubric</strong> — what the grader is looking for</summary>
+    <pre>{{ ex.rubric_md }}</pre>
+  </details>
+
+  {% if ex.expected_stdout %}
+  <details class="card">
+    <summary><strong>Expected output</strong></summary>
+    <pre>{{ ex.expected_stdout }}</pre>
+  </details>
+  {% endif %}
+</div>
+
+{% if ex.argv %}
+<p><strong>Args:</strong> <code>{{ ex.argv | join(' ') }}</code></p>
+{% endif %}
+
+<section class="card">
+  <h3>Submit your code</h3>
+  {% if prior_source %}
+  <p class="meta">
+    Your most recent submission is preloaded below — edit and resubmit
+    to iterate on it.
+  </p>
+  {% endif %}
+  <form method="post" action="/submit">
+    <input type="hidden" name="exercise_slug" value="{{ ex.slug }}">
+    <input type="hidden" name="exercise_version" value="{{ ex.version }}">
+    <textarea name="source_code" rows="20" cols="80" required
+              style="font-family:monospace;width:100%">{{ prior_source }}</textarea><br>
+    <button type="submit" class="btn-primary">Submit</button>
+  </form>
+</section>
+
+{% endblock %}

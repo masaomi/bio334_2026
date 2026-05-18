@@ -1,0 +1,82 @@
+# Day 1, Part 1 — Python list basics: mean of a list (Exercise 1 of gist).
+# Source: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
+#
+# The gist also has Exercise 2 (standard deviation) and two advanced
+# items (nPr/nCr; sampling-bias mean/variance). We use Exercise 1 as
+# the graded slug because the output is short and exact-match-friendly;
+# the other items appear in the rubric as bonus context.
+
+slug: day1_p1_list_basics
+title: Day 1 Part 1, Ex 1 — mean of a list
+day: 1
+part: 1
+order_index: 1
+source_gist_url: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
+
+description_md: |
+  ## Day 1, Part 1 — Exercise 1: Mean of a list
+
+  ### Goal
+  Review Python grammar (`list`, `for`, `sum`, arithmetic) by computing
+  the mean of a hard-coded list.
+
+  ### Template
+
+  ```python
+  list1 = [1, 2, 3, 4, 5, 6]
+  #
+  # Your code here — compute the mean of list1
+  #
+  print("list = ", list1)
+  print("mean =", mean)
+  ```
+
+  ### Expected output
+
+  ```
+  $ python day1_1_exercise1.py
+  list =  [1, 2, 3, 4, 5, 6]
+  mean = 3.5
+  ```
+
+  ### Notes
+  - There are two spaces after `list = ` in the canonical output
+    because the comma in `print("list = ", list1)` adds a space and
+    the `=` already has one — match the canonical exactly.
+  - Use `len(list1)` to get the count; do not hard-code 6.
+
+rubric_md: |
+  Score this submission against the following criteria.
+
+  Required (full credit):
+  1. Computes the mean using `sum(list1) / len(list1)` (or an equivalent
+     loop). No hard-coded division by 6.
+  2. Prints exactly two lines matching the canonical output, including
+     the double-space after `list =` (Python's default print
+     space-separator does this automatically).
+  3. Code runs cleanly (exit code 0).
+
+  Partial credit guidance:
+  - Hard-coded denominator (`/ 6`) but otherwise correct: 60–75 — flag
+    that the code won't generalize to other lists.
+  - Uses `statistics.mean()`: full credit; the import is fine for a
+    review exercise.
+  - Output value correct but format off (single space, missing labels):
+    50–70 depending on how close to the canonical layout.
+
+  Style notes:
+  - At Day-1 stage, single-line implementations are fine. Don't push
+    students toward functions yet — that's Day 2 Part 2 territory.
+
+expected_stdout: |
+  list =  [1, 2, 3, 4, 5, 6]
+  mean = 3.5
+
+argv: []
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 10

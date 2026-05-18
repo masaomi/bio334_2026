@@ -1,0 +1,117 @@
+# Day 3 — Nucleotide diversity from VCF files (Exercise 1 of the gist).
+# Source: https://gist.github.com/masaomi/1397a32c4b870f7ab7e92f479770788d
+
+slug: day3_final
+title: Day 3, Ex 1 — π from VCF files (3 toy samples)
+day: 3
+part: 1
+order_index: 1
+source_gist_url: https://gist.github.com/masaomi/1397a32c4b870f7ab7e92f479770788d
+
+description_md: |
+  ## Day 3 — Exercise 1: π from VCF files
+
+  ### Goal
+  Tie together everything from Days 1–2: dictionaries, file I/O,
+  loops, and the pair-wise-difference idea. Compute nucleotide
+  diversity (π) directly from per-sample VCF files instead of
+  reconstructing aligned FASTA first.
+
+  ### Background
+  Each VCF file lists the SNPs (positions and alternative nucleotide)
+  observed in one sample relative to a shared reference. For two
+  samples, the number of pair-wise differences is:
+
+  1. Positions that appear in only one sample (XOR of position keys).
+  2. Plus positions that appear in both samples but with different
+     alternative nucleotides.
+
+  Assume the reference length is **4** (toy example, matches the
+  three provided VCF files).
+
+  ### Task
+  - Use `glob` to enumerate every `*.vcf` in the current directory.
+  - Parse each line: position is the 3rd column, alternative
+    nucleotide is the 5th column (whitespace-separated).
+  - Build a per-sample list (or dict) of `(position, nucleotide)`
+    entries.
+  - For each unordered pair of samples, compute the difference count
+    using the XOR-or-mismatch rule above.
+  - π = (sum of pair-wise differences) / (number of pairs) /
+        (reference length).
+
+  ### Expected output
+
+  ```
+  $ python3 day3_exercise1.py
+  sample1.vcf :  [('1', 'A'), ('3', 'G'), ('4', 'C')]
+  sample2.vcf :  [('1', 'A'), ('4', 'T')]
+  sample3.vcf :  [('1', 'A'), ('3', 'G'), ('4', 'C')]
+  compare: sample1 & sample2: diff=2
+  compare: sample1 & sample3: diff=0
+  compare: sample2 & sample3: diff=2
+  pi = 0.333333
+  ```
+
+  ### Input files
+  - `sample1.vcf`, `sample2.vcf`, `sample3.vcf` — toy SNP files,
+    provided in the sandbox working directory.
+
+rubric_md: |
+  This is the capstone; we are intentionally a bit more generous on
+  pass_threshold (65) and llm_floor (35) because solutions vary a
+  lot — what matters is that the student wired the day-1 and day-2
+  concepts together correctly.
+
+  Required for full credit:
+  1. Enumerates VCF files via `glob.glob("*.vcf")` (or an equivalent;
+     order does not need to be deterministic, but the canonical
+     output above happens to be alphabetic by filename — encourage
+     `sorted(...)`).
+  2. Parses each line correctly (column 3 = position, column 5 =
+     allele, whitespace split).
+  3. Computes pair-wise differences with the XOR + mismatch rule.
+  4. Computes π = total_diff / nC2 / L = total_diff / 3 / 4 for the
+     toy input.
+  5. Prints the per-file summary, the per-pair `diff=`, and the final
+     `pi = 0.333333` (6 decimals).
+  6. Code runs cleanly.
+
+  Partial credit:
+  - Correct algorithm, output format slightly off: 60–80; pinpoint
+    the mismatch in feedback.
+  - Loaded files OK but pair-wise difference logic missing a case
+    (e.g., XOR positions ignored): 50–65; explain both cases.
+  - Got π but divided by wrong denominator (e.g., forgot reference
+    length): 55–70.
+  - Capstone fakery (hardcoded prints): well below LLM_FLOOR.
+
+  Style notes:
+  - `set(d1.keys()) ^ set(d2.keys())` is the cleanest XOR pattern.
+  - 6-decimal formatting via `"%f"` or `f"{pi:.6f}"` both fine.
+
+  Feedback:
+  - For the capstone, give a few sentences of meta-commentary tying
+    the student's solution back to the population-genetics meaning
+    (π = average pair-wise difference per site, a measure of
+    diversity in a sample of sequences).
+  - If the student tried something more elegant than the template
+    suggests, acknowledge it.
+
+expected_stdout: |
+  sample1.vcf :  [('1', 'A'), ('3', 'G'), ('4', 'C')]
+  sample2.vcf :  [('1', 'A'), ('4', 'T')]
+  sample3.vcf :  [('1', 'A'), ('3', 'G'), ('4', 'C')]
+  compare: sample1 & sample2: diff=2
+  compare: sample1 & sample3: diff=0
+  compare: sample2 & sample3: diff=2
+  pi = 0.333333
+
+argv: []
+files_provided: ["sample1.vcf", "sample2.vcf", "sample3.vcf"]
+
+max_score: 100
+pass_threshold: 65   # capstone, slightly more lenient
+llm_floor: 35        # ditto
+allow_nonzero_rc: false
+timeout_s: 30

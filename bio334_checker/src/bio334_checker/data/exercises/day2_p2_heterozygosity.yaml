@@ -1,0 +1,108 @@
+# Day 2, Part 2 — Advanced Exercise 1: Heterozygosity (H) + π.
+# Source: https://gist.github.com/masaomi/c6c74db5ba67ff58a6b75ac195bd8143
+#
+# Grading: LLM-only (same reason as Ex 1 / Ex 2 — the gist's
+# canonical numbers are from a 1000-sequence alignment we don't
+# bundle). The relationship π = H × n / (n-1) is itself part of
+# the rubric: a correct submission shows the two numbers in that
+# ratio, even if absolute values differ from the canonical.
+
+slug: day2_p2_heterozygosity
+title: Day 2 Part 2, Adv 1 — Heterozygosity (H) alongside π
+day: 2
+part: 2
+order_index: 3
+source_gist_url: https://gist.github.com/masaomi/c6c74db5ba67ff58a6b75ac195bd8143
+
+description_md: |
+  ## Day 2, Part 2 — Advanced Exercise 1: Heterozygosity
+
+  ### Goal
+  Add a second diversity metric — **Heterozygosity (H)** — and
+  compare it against π. Both are computed from the same aligned
+  FASTA.
+
+  ### Background
+
+  Heterozygosity at one site:
+
+  $$H_{\text{site}} = 1 - \sum_{a \in \{A,T,G,C\}} p_a^2$$
+
+  where $p_a$ is the frequency of base *a* at that site (ignore
+  any other characters such as `N` or `-`).
+
+  Overall heterozygosity:
+
+  $$H = \frac{1}{L} \sum_{k=1}^{L} H_{\text{site}_k}$$
+
+  ### Required functions
+  - `load_fasta(path)` — return a list of aligned sequences.
+  - `calc_pi(sequences)` — return π (reuse from Ex 2).
+  - `calc_heterozygosity(sequences)` — return H.
+
+  ### Expected output (canonical, 1000-seq alignment)
+
+  ```
+  $ python day2_2_advanced1.py input.fa
+  pi = 0.06734894894894895
+  Heterozygosity (H) = 0.06728160000000001
+  ```
+
+  ### Relationship between π and H
+  These are mathematically related:
+
+  $$\pi = H \cdot \frac{n}{n - 1}$$
+
+  For *n* = 1000, the ratio is 1000 / 999 ≈ 1.001 — and indeed
+  0.06734894… / 0.06728160… ≈ 1.001. The ratio between **your**
+  computed π and H should also be n/(n-1), regardless of the
+  specific alignment — the rubric uses this as one correctness
+  check.
+
+  ### Notes
+  - LLM-only grading. The 1000-seq canonical numbers will not be
+    reproducible without the original alignment.
+  - π's denominator is *pairs* (`nC2`), H's denominator is *sites*
+    (`L`) — make sure your two functions use the right one.
+
+rubric_md: |
+  Score this submission against the following criteria.
+
+  Required (full credit):
+  1. `load_fasta(path)` correctly parses a FASTA file (skip
+     headers, strip newlines).
+  2. `calc_pi(sequences)` reproduces Ex 2's logic correctly.
+  3. `calc_heterozygosity(sequences)` correctly implements
+     1 − Σpᵢ², averaged across **valid** sites (sites with only
+     A/T/G/C characters).
+  4. Per-site frequencies sum to 1 (or are normalised correctly).
+  5. Prints two labelled lines in the canonical order.
+  6. **Internal-consistency check**: π / H ≈ n / (n − 1) for the
+     student's input. The rubric should sanity-check this ratio if
+     the student reports any values — if it's wildly off (say, > 2
+     or < 0.5), the underlying calculation is broken even if the
+     individual numbers "look right".
+
+  Partial credit guidance:
+  - π correct, H wrong because student divided by nC2 instead of L:
+    55–70 — flag the per-site vs per-pair distinction explicitly.
+  - H correct, π wrong: 55–70.
+  - Includes 'N' or '-' or 'X' in the frequency calculation: 60–75,
+    explain that ambiguous characters should be filtered.
+  - Hardcoded outputs: well below LLM_FLOOR.
+
+  Style notes:
+  - `collections.Counter` per site is the cleanest idiom.
+  - Reusing `calc_pi` from Ex 2 is the intended design — it
+    enforces the function-decomposition lesson.
+
+# No expected_stdout → exact-match skipped, rubric-only.
+
+argv: ["input.fa"]
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 20

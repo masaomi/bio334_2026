@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Cohort dashboard</h2>
+
+<p style="color:#666;">
+  This view shows your own status alongside the cohort median best-score
+  per exercise. Median is suppressed on exercises with fewer than
+  {{ min_submitters }} distinct submitters to protect anonymity.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th class="ctr">Day</th>
+      <th class="num">Your best</th>
+      <th>Status</th>
+      <th class="num">Submitters</th>
+      <th class="num">Cohort median</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td><a href="/exercises/{{ r.personal.slug }}">{{ r.personal.title }}</a></td>
+      <td class="ctr">{{ r.personal.day }}</td>
+      <td class="num">{{ r.personal.best_score if r.personal.best_score is not none else '—' }}</td>
+      <td>
+        {% if r.personal.passed %}<span class="pill pill--pass">passed</span>
+        {% elif r.personal.attempted %}<span class="pill pill--warn">not yet</span>
+        {% else %}<span class="pill">—</span>{% endif %}
+      </td>
+      <td class="num">{{ r.cohort.submitters if r.cohort else 0 }}</td>
+      <td class="num">
+        {% if r.cohort and not r.cohort.suppressed %}
+          {{ '%.0f' % r.cohort.median_best_score }}
+        {% else %}
+          <span style="color:var(--c-mute);" title="suppressed below {{ min_submitters }} submitters">—</span>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,110 @@
+# Day 1, Part 1 — Exercise 2 of the gist: standard deviation of a list.
+# Source: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
+#
+# Builds on Ex 1 (mean): now compute the population standard deviation
+# of the same hard-coded list, using math.sqrt(). Output format matches
+# the gist's expected line "sd = 1.707825" (6 decimal places via %f).
+
+slug: day1_p1_list_sd
+title: Day 1 Part 1, Ex 2 — standard deviation of a list
+day: 1
+part: 1
+order_index: 2
+source_gist_url: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
+
+description_md: |
+  ## Day 1, Part 1 — Exercise 2: Standard deviation of a list
+
+  ### Goal
+  Extend Exercise 1 (mean) to compute the population standard
+  deviation of the same list. Use `math.sqrt()` and review the
+  formula
+
+  $$\sigma = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
+
+  ### Hint
+  To compute square roots:
+
+  ```python
+  import math
+  print(math.sqrt(2))   # => 1.4142135623730951
+  ```
+
+  Round the output to 6 decimal places to match the canonical
+  exactly:
+
+  ```python
+  print("sd = %f" % sd)
+  ```
+
+  ### Template
+
+  ```python
+  import math
+
+  list1 = [1, 2, 3, 4, 5, 6]
+  #
+  # Your code here — compute the mean, then the standard deviation
+  #
+  print("list = ", list1)
+  print("sd = %f" % sd)
+  ```
+
+  ### Expected output
+
+  ```
+  $ python day1_1_exercise2.py
+  list =  [1, 2, 3, 4, 5, 6]
+  sd = 1.707825
+  ```
+
+  ### Notes
+  - Use the **population** standard deviation (divide by *n*, not
+    *n−1*). The canonical 1.707825 is the population value;
+    `statistics.stdev()` is the *sample* SD and will produce a
+    different number (≈ 1.870829).
+  - The `%f` formatter prints 6 decimals by default — that matches
+    the gist's canonical output exactly.
+
+rubric_md: |
+  Score this submission against the following criteria.
+
+  Required (full credit):
+  1. Computes the mean of `list1` (reuse of Ex 1 logic is fine).
+  2. Computes the **population** standard deviation:
+     `sqrt(sum((x - mean)**2 for x in list1) / len(list1))`.
+     Sample SD (`/ (n - 1)`) is wrong here.
+  3. Uses `math.sqrt()` (or `**0.5`); imports `math` at the top.
+  4. Prints two lines matching the canonical: `list = ` with two
+     spaces (from `print` comma-separator) and `sd = 1.707825`.
+  5. Code runs cleanly (exit code 0).
+
+  Partial credit guidance:
+  - Sample SD (1.870829) instead of population SD: 60–75. Flag the
+    n vs n-1 mistake explicitly in feedback.
+  - Correct formula but wrong number of decimal places (e.g.,
+    `print("sd =", sd)` prints 1.707825127659933 — the disagreement
+    banner is the lesson): 75–90.
+  - Uses `statistics.stdev()` (sample): same as the sample-SD case.
+    `statistics.pstdev()` (population) is fine.
+  - Hard-coded value of 1.707825 with no real computation: well
+    below LLM_FLOOR.
+
+  Style notes:
+  - List comprehension for the squared-deviation sum is clean and
+    worth praising.
+  - At Day-1 stage, function extraction is not expected — that's
+    Day 2 Part 2.
+
+expected_stdout: |
+  list =  [1, 2, 3, 4, 5, 6]
+  sd = 1.707825
+
+argv: []
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 10

@@ -1,0 +1,132 @@
+# Day 2, Part 3 — Segregating sites from aligned FASTA (Exercise 1 of the gist).
+# Source: https://gist.github.com/masaomi/c5a11879a9deefccd40c57c1ba975b3a
+
+slug: day2_p3_tajima_d
+# NOTE: slug name is a historical leftover from when this part was
+# scoped as "toward Tajima's D"; the actual full-Tajima's-D exercise
+# is now day2_p4_tajima_d_full. Slug is not renamed to preserve
+# chain-log and admin-export references; only the title is updated.
+title: Day 2 Part 3, Ex 1 — total segregating sites
+day: 2
+part: 3
+order_index: 1
+source_gist_url: https://gist.github.com/masaomi/c5a11879a9deefccd40c57c1ba975b3a
+
+description_md: |
+  ## Day 2, Part 3 — Exercise 1: Total segregating sites
+
+  ### Goal
+  Understand the `set` data structure and use it to detect
+  segregating sites (positions where two or more alleles appear) in
+  an aligned multiple-sequence FASTA file.
+
+  ### Background
+  A **segregating site** is a position in an alignment where at least
+  two different nucleotides are observed across the sequences — i.e.,
+  a single-nucleotide polymorphism (SNP). Counting these is the first
+  step toward computing Tajima's D and Watterson's θ.
+
+  ### Template
+
+  ```python
+  import sys
+
+  sequences = []
+  f = open(sys.argv[1])
+  for line in f:
+      if not line[0] == ">":
+          sequences.append(line.rstrip())
+  f.close()
+
+  total_seg_sites = 0
+  #
+  # Implement a process here
+  #
+
+  print("total segregating sites =", total_seg_sites)
+  ```
+
+  ### Expected output
+
+  ```
+  $ python3 day2_3_exercise1.py input.fa
+  ['G']	not segregating
+  ['A']	not segregating
+  ['A']	not segregating
+  ['G']	not segregating
+  ['A']	not segregating
+  ['C', 'T']	segregating
+  ['T']	not segregating
+  ['A', 'T']	segregating
+  ['G']	not segregating
+  ['T']	not segregating
+  Total segregating sites = 2
+  ```
+
+  Note: the gap before `segregating` / `not segregating` is a **tab**.
+  The final line uses `Total` (capital T), not `total`.
+
+  ### Input file
+  - `input.fa` — an aligned FASTA file. The checker provides this in
+    the sandbox working directory.
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. Loads sequences from the file path on `sys.argv[1]` and skips
+     header lines starting with `>`.
+  2. For each position `i` from 0 to `len(sequences[0]) - 1`, collects
+     the nucleotide from every sequence at that position into a list
+     (`alleles`), then converts to a `set` (or otherwise checks for
+     unique values).
+  3. Prints `<alleles_list>\t<segregating|not segregating>` per
+     position — note the **tab** between the list literal and the
+     verdict label.
+  4. Increments `total_seg_sites` only when more than one distinct
+     allele is observed at a position.
+  5. Prints the final line `Total segregating sites = <n>` (capital
+     `T` in "Total"). For the canonical input the answer is 2.
+  6. Code runs cleanly.
+
+  Partial credit guidance:
+  - Correct counting but per-position output missing: 65–75.
+  - Per-position output present but the final line uses lowercase
+    `total` instead of `Total` (would mismatch exact_match): 75–90;
+    the disagreement banner is the lesson here.
+  - Counts duplicates as separate alleles (e.g., `["A","A"]` flagged
+    as segregating): 40–55; algorithmic error.
+  - Hardcoded output of all 10 lines and `Total = 2` with no real
+    loop: well below LLM_FLOOR.
+
+  Style notes:
+  - `set(alleles)` length check is the idiomatic approach.
+  - `print(alleles, end="\t")` then a conditional `print(...)` works
+    cleanly with the template's structure.
+
+  Feedback:
+  - Reference the `set` data structure explicitly.
+  - For the missing tab case: students often miss tabs in stdout
+    matching, so explicitly call it out.
+
+expected_stdout: |
+  ['G']	not segregating
+  ['A']	not segregating
+  ['A']	not segregating
+  ['G']	not segregating
+  ['A']	not segregating
+  ['C', 'T']	segregating
+  ['T']	not segregating
+  ['A', 'T']	segregating
+  ['G']	not segregating
+  ['T']	not segregating
+  Total segregating sites = 2
+
+argv: ["input.fa"]
+files_provided: ["input.fa"]
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 15

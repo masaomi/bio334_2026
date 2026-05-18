@@ -1,0 +1,136 @@
+# Day 2, Part 4 — Advanced Exercise 2: Wright-Fisher simulation + Tajima's D trajectory.
+# Source: https://gist.github.com/masaomi/0f51c4a379a0b914c86c84f480e961df
+#
+# Grading: LLM-only, CODE REVIEW ONLY (do not require running the
+# simulation or generating a plot). The exercise asks the student
+# to MODIFY wright_fisher.py to produce a non-neutral Tajima's D
+# trajectory; with random.seed unset every run differs, the result
+# is a PNG plot (not stdout), and the correct parameter change is
+# not unique (selection, bottleneck, expansion, etc. all valid).
+#
+# allow_nonzero_rc is set to true so the LLM rubric still grades
+# the code even if the sandbox can't import matplotlib / pandas
+# (which are common on the host but not guaranteed in the sandbox).
+# The student is told to submit only the modified wright_fisher.py
+# with a hypothesis block at the top.
+
+slug: day2_p4_wright_fisher
+title: Day 2 Part 4, Adv 2 — Wright-Fisher simulation, drive Tajima's D off zero
+day: 2
+part: 4
+order_index: 4
+source_gist_url: https://gist.github.com/masaomi/0f51c4a379a0b914c86c84f480e961df
+
+description_md: |
+  ## Day 2, Part 4 — Advanced Exercise 2: Wright-Fisher
+
+  ### Goal
+  Take the neutral Wright-Fisher simulation `wright_fisher.py`
+  (provided in the course materials) and **modify it** so that
+  Tajima's D trajectory is reliably **non-zero** — either
+  consistently > 0 or consistently < 0 over the simulated
+  generations.
+
+  The default simulation is **neutral**: no selection, constant
+  population size, constant mutation rate. Under neutrality
+  Tajima's D fluctuates around 0. Your job is to introduce a
+  biological scenario where the expected D has a known sign and
+  observe (or argue) that the trajectory matches.
+
+  ### Possible parameter changes (pick one and justify)
+
+  | Modification                                  | Expected TD sign |
+  |-----------------------------------------------|------------------|
+  | Add positive selection on a specific site     | Negative (sweep) |
+  | Add a population bottleneck                   | Negative then 0  |
+  | Add balancing selection (e.g., heterozygote-advantage) | Positive   |
+  | Add population expansion (rapidly grow pop)   | Negative         |
+  | Increase mutation rate dramatically           | TD = 0 (still neutral) |
+
+  The last row is a deliberate trap: just changing `mut_rate`
+  alone does NOT break neutrality.
+
+  ### What to submit
+  Submit your **modified `wright_fisher.py`** with a comment block
+  at the top of the file explaining:
+
+  1. Which parameter / mechanism you changed.
+  2. What Tajima's D sign you expect, and why (one or two
+     sentences referencing the population-genetic intuition).
+  3. Approximately what you observed when you ran your modified
+     script locally (the trajectory shape — you don't need to
+     paste the plot, just describe).
+
+  ### Grading note
+  This exercise is graded by the **LLM only**, and the grader
+  reads your **code and hypothesis comment** — it does NOT run
+  your simulation (run-to-run variability + matplotlib
+  dependencies make sandbox runs unreliable). Your printed numbers
+  and the actual PNG are not evaluated. The score is based on:
+
+  - whether your modification rationally produces the expected
+    TD sign (vs the "increase mut_rate" trap),
+  - the clarity of your hypothesis,
+  - the structural correctness of the simulation code after your
+    edits.
+
+  Run the simulation locally and look at your plot to convince
+  yourself, but submit only the script.
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. The modified `wright_fisher.py` is syntactically valid Python
+     and the simulation logic is intact after the edits.
+  2. The comment block at the top names the modified mechanism,
+     states the expected TD sign, and gives a one-sentence reason
+     grounded in population genetics (e.g., "positive selection
+     drives a rare allele to high frequency, producing an excess
+     of low-frequency derived alleles ⇒ negative D").
+  3. The change actually has the proposed effect, not just a
+     superficial rename. Examples that DO work:
+     - introducing a per-site selection coefficient
+     - shrinking pop_num mid-simulation (bottleneck)
+     - growing pop_num steadily (expansion)
+     - introducing a heterozygote-advantage Mendelian rule
+  4. Avoiding the trap: just bumping `mut_rate` from 0.001 to 0.01
+     (with no other change) keeps the simulation neutral and does
+     NOT produce a reliable TD sign. If that's the only change,
+     mark it down.
+
+  Partial credit guidance:
+  - Code modified sensibly but no hypothesis comment: 50–65 — the
+    hypothesis IS the deliverable.
+  - Hypothesis stated but the code change is unrelated or
+    cosmetic: 40–55.
+  - "Increased mut_rate" only: 30–45. Explain the trap explicitly.
+  - Modified the wrong file (e.g., submitted plot_tajimasd.py
+    instead of wright_fisher.py): 20–35.
+
+  Style notes:
+  - The hypothesis comment doesn't need to be a paragraph; a 3-4
+    line docstring at the top of the file is plenty.
+  - Reasonable: bottleneck implemented by changing `pop_num` mid
+    loop. Unreasonable: introducing a `np.random.seed(42)` and
+    claiming "now D is non-zero" — that's just lucky variance,
+    not a structural reason.
+
+  Feedback:
+  - Always acknowledge the chosen mechanism explicitly.
+  - If the trap was hit, walk through WHY mut_rate alone doesn't
+    break neutrality (Tajima's D is invariant under mut_rate; both
+    π and θ scale together).
+
+# No expected_stdout → exact-match skipped; rubric grades code +
+# hypothesis. allow_nonzero_rc=true so missing matplotlib in the
+# sandbox doesn't block grading.
+
+argv: []
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: true
+timeout_s: 30

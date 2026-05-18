@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Exercise visibility — admin{% endblock %}
+{% block body %}
+<h2>Exercise visibility</h2>
+
+<p class="meta">
+  Students see <strong>{{ visible_count }} / {{ total }}</strong> exercises right
+  now. Untick a row to hide it from the student-facing list, dashboard,
+  and leaderboard. Existing submissions remain readable to their owners
+  even after the exercise is hidden — only future submissions are blocked.
+</p>
+
+<div class="callout callout--teach">
+  <strong>How to pace a course day.</strong>
+  Click <em>Hide all</em> before the lecture, give the lecture, then click
+  the day cut-off button (e.g. <em>Reveal up to Day 1</em>) to release the
+  matching exercises. Or tick individual rows for finer control.
+</div>
+
+<form method="post" action="/admin/exercises/visibility">
+  <p>
+    <button type="submit" name="preset" value="show_all" class="btn-secondary">Show all</button>
+    <button type="submit" name="preset" value="hide_all" class="btn-secondary">Hide all</button>
+    {% for d in [1, 2, 3] %}
+      <button type="submit" name="preset" value="day_le_{{ d }}" class="btn-secondary">
+        Reveal up to Day&nbsp;{{ d }}
+      </button>
+    {% endfor %}
+  </p>
+</form>
+
+<form method="post" action="/admin/exercises/visibility">
+  {% for day, items in groups %}
+    <h3>Day {{ day }}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th class="ctr" style="width:5rem;">Visible</th>
+          <th>Title</th>
+          <th>Slug</th>
+          <th class="ctr">Part</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for it in items %}
+        <tr>
+          <td class="ctr">
+            <input type="checkbox" name="slug" value="{{ it.slug }}"
+              {% if it.visible_to_students %}checked{% endif %}>
+          </td>
+          <td>{{ it.title }}</td>
+          <td><code>{{ it.slug }}</code></td>
+          <td class="ctr">{{ it.part }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+
+  <p style="margin-top: var(--s3);">
+    <button type="submit" class="btn-primary">Save visibility</button>
+    <span class="meta">— ticks above become the new student view; unticked rows are hidden.</span>
+  </p>
+</form>
+{% endblock %}

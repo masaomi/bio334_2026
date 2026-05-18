@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Exercises</h2>
+
+{% if not groups %}
+<p>No exercises loaded yet. Ask your instructor.</p>
+{% endif %}
+
+{% for day, items in groups %}
+<h3>Day {{ day }}</h3>
+<ul style="list-style:none; padding-left:0;">
+  {% for it in items %}
+  {% set _st = status_by_slug.get(it.slug, 'todo') %}
+  <li style="padding: var(--s1) 0; border-bottom: 1px solid #eef;">
+    {% if _st == 'passed' %}
+      <span class="pill pill--pass" title="passed">✓</span>
+    {% elif _st == 'attempted' %}
+      <span class="pill pill--warn" title="attempted, not yet">…</span>
+    {% else %}
+      <span class="pill" title="not started">·</span>
+    {% endif %}
+    <a href="/exercises/{{ it.slug }}">{{ it.title }}</a>
+    <span class="meta">part {{ it.part }} · Ex {{ it.order_index }} · v{{ it.version }}</span>
+  </li>
+  {% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}

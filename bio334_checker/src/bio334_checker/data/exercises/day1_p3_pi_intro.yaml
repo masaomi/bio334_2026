@@ -1,0 +1,91 @@
+# Day 1, Part 3 — Pair-wise comparison of 3 sequences (Exercise 1 of the gist).
+# Source: https://gist.github.com/masaomi/857f8257e4ec9d4fb80557a5890f22a3
+
+slug: day1_p3_pi_intro
+title: Day 1 Part 3, Ex 1 — pair-wise comparison of 3 sequences
+day: 1
+part: 3
+order_index: 1
+source_gist_url: https://gist.github.com/masaomi/857f8257e4ec9d4fb80557a5890f22a3
+
+description_md: |
+  ## Day 1, Part 3 — Exercise 1: Pair-wise comparison of 3 sequences
+
+  ### Goal
+  Understand the **nested loop** structure and use it to compare more
+  than two sequences. For each unique pair (i, j) with i < j, just
+  report whether the two sequences are identical or different.
+
+  ### Template
+
+  ```python
+  seq1 = "ATGC"   # First sequence
+  seq2 = "ATAT"   # Second sequence
+  seq3 = "ATGC"   # Third sequence
+
+  sequences = [seq1, seq2, seq3]
+
+  for i in range(0, len(sequences)):           # First loop: pick the first sequence
+      for j in range(i+1, len(sequences)):     # Second loop: pick the second sequence
+          #
+          # Your code here
+          #
+  ```
+
+  ### Expected output
+
+  ```
+  $ python day1_3_exercise1.py
+  0 ATGC 1 ATAT	different
+  0 ATGC 2 ATGC	same
+  1 ATAT 2 ATGC	different
+  ```
+
+  Note: the gap between the second sequence and `different`/`same` is a
+  **tab character** (`\t`), not spaces.
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. Uses the given nested loop (outer `i`, inner `j = i+1 ..`) so
+     each unordered pair is visited exactly once (3 lines of output
+     for 3 sequences).
+  2. For each pair, compares the two sequences for equality (a
+     direct `==` on the whole string is fine; a per-position loop is
+     also fine).
+  3. Prints the index of the first sequence, its content, the index
+     of the second, its content, then a tab, then `same` or
+     `different`. Order matters; tab matters.
+  4. Code runs cleanly (exit code 0).
+
+  Partial credit guidance:
+  - Walks all 9 ordered pairs instead of 3 unordered pairs: 50–60
+    (algorithm wrong direction but iteration concept partially shown).
+  - Correct loop but wrong same/different verdict (e.g. printed
+    inverted): 60–70.
+  - Output uses spaces instead of a tab between sequence and verdict:
+    75–85; mention the tab requirement in feedback.
+  - No nested loop, hardcoded print of all three lines (output-only
+    fakery): well below LLM_FLOOR. The AND-gate blocks this.
+
+  Style notes:
+  - Single-letter loop indices `i`, `j` are appropriate here.
+  - `==` directly on whole strings is preferred over a manual loop.
+  - f-strings or `%`-style both fine.
+
+  Feedback:
+  - Recognize the nested-loop comprehension explicitly.
+  - If wrong, point at the inner loop's start index (`range(i+1, ...)`
+    is what makes pairs unordered).
+
+expected_stdout: "0 ATGC 1 ATAT\tdifferent\n0 ATGC 2 ATGC\tsame\n1 ATAT 2 ATGC\tdifferent\n"
+
+argv: []
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 10

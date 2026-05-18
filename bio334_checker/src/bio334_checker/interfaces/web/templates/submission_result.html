@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Submission #{{ row.id }} — bio334-checker{% endblock %}
+{% block body %}
+<p><a href="/exercises/{{ row.exercise_slug }}">← back to exercise</a> ·
+  logged in as <span class="handle">{{ handle }}</span></p>
+
+<h2>Submission #{{ row.id }}</h2>
+
+{% if row.status == 'pending' %}
+<div class="note">
+  <strong>Submitted, grading queued.</strong>
+  The grader is currently unreachable. Your submission has been recorded
+  and the sandbox stage already ran. Refresh this page later to see the
+  rubric score, or resubmit if you want to revise.
+</div>
+{% elif row.status == 'failed' %}
+<div class="err">
+  <strong>Grading is currently unavailable for this submission.</strong>
+  The instructor has been notified. Please try resubmitting later.
+</div>
+{% else %}
+  <div class="callout callout--teach">
+    <strong>This is an LLM's assessment and may be wrong.</strong>
+    If something looks off, investigate — sometimes the LLM is mistaken,
+    sometimes it has caught a real issue you didn't see.
+  </div>
+
+  {% if disagreement == 'match_but_grader_failed' %}
+  <div class="callout callout--disagree">
+    <strong>Grader disagreement: your output matches the expected
+    answer, but the grader thinks the approach has issues.</strong>
+    Investigate which is right and why.
+  </div>
+  {% elif disagreement == 'grader_passed_but_no_match' %}
+  <div class="callout callout--disagree">
+    <strong>Grader disagreement: the grader thinks your approach is
+    sound, but your output differs from the canonical answer.</strong>
+    Investigate the difference — formatting? off-by-one? a different
+    valid answer?
+  </div>
+  {% endif %}
+
+  <p style="margin: var(--s2) 0;">
+    {% if row.passed %}
+      <span class="pill pill--pass">PASSED</span>
+    {% else %}
+      <span class="pill pill--warn">NOT YET</span>
+    {% endif %}
+    <span class="meta">
+      · LLM score: {{ row.llm_score if row.llm_score is not none else '—' }}/100
+      · exact-match: {{ 'yes' if row.exact_match else 'no' }}
+      · status: {{ row.status }}
+    </span>
+  </p>
+
+  {% if row.passed and row.exact_match and not disagreement %}
+  <div class="callout callout--teach">
+    <strong>Your output matches the canonical exactly — but read it once
+    more, slowly.</strong>
+    Canonical answers in this course are not always perfect. Look at the
+    final printed lines, the labels, and any spelling. Noticing a quirk
+    where the canonical is wrong is part of the lesson, and worth more
+    than the green checkmark.
+  </div>
+  {% endif %}
+{% endif %}
+
+<details open>
+  <summary>Sandbox output</summary>
+  <p><strong>stdout:</strong></p>
+  <pre>{{ row.sandbox_stdout or '(empty)' }}</pre>
+  {% if row.sandbox_stderr %}
+  <p><strong>stderr:</strong></p>
+  <pre>{{ row.sandbox_stderr }}</pre>
+  {% endif %}
+  <p style="color:#888;">exit code {{ row.sandbox_rc if row.sandbox_rc is not none else '—' }}</p>
+</details>
+
+{% if row.llm_feedback_md %}
+<details open>
+  <summary>Grader feedback</summary>
+  <div class="llm-feedback">
+    {{ row.llm_feedback_md | markdown }}
+  </div>
+</details>
+{% endif %}
+
+<details>
+  <summary>Your code</summary>
+  <pre>{{ row.source_code }}</pre>
+</details>
+
+{% if row.passed %}
+  <p style="margin-top: var(--s3);">
+    {% if next_slug %}
+      <a href="/exercises/{{ next_slug }}"><strong>Next exercise →</strong></a>
+      &nbsp;·&nbsp;
+    {% endif %}
+    <a href="/me">Back to your page</a>
+    &nbsp;·&nbsp;
+    <a href="/exercises/{{ row.exercise_slug }}" style="color: var(--c-mute);">Revisit this one</a>
+  </p>
+{% else %}
+  <p style="margin-top: var(--s3);"><a href="/exercises/{{ row.exercise_slug }}"><strong>Try again →</strong></a></p>
+
+  <form method="post" action="/hint/{{ row.id }}" style="margin-top:var(--s2);">
+    <button type="submit" class="btn-secondary">Get a hint</button>
+    <span class="meta">
+      Hints unlock after two failed submissions or about five minutes of think time —
+      we hold them back on purpose so that the productive struggle (which is
+      where the learning actually happens) gets a chance first.
+    </span>
+  </form>
+{% endif %}
+{% endblock %}

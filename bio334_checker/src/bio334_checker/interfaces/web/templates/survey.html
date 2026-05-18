@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Course survey — bio334-checker{% endblock %}
+{% block body %}
+<h2>End-of-course survey</h2>
+<div class="note">
+  <strong>This survey is fully anonymous.</strong> Your responses are not
+  linked to your handle, your IP, or any session cookie. The instructor
+  sees only the aggregated counts (pie / bar charts) and the list of
+  free-text comments — never who said what.
+</div>
+
+<form method="post" action="/survey">
+  {% for q in questions %}
+    <fieldset style="margin: 1.5rem 0; padding: 0.8rem 1rem; border: 1px solid #ddd; border-radius: 4px;">
+      <legend style="padding: 0 0.5rem;"><strong>{{ loop.index }}. {{ q.prompt }}</strong></legend>
+
+      {% if q.type == "single" %}
+        {% for value, label in q.options %}
+          <label style="display:block; margin: 0.3rem 0;">
+            <input type="radio" name="{{ q.key }}" value="{{ value }}" required>
+            {{ label }}
+          </label>
+        {% endfor %}
+      {% elif q.type == "likert" %}
+        <p style="color:#666; font-size:0.9em; margin: 0.3rem 0;">
+          1 = {{ q.low_label }} · 5 = {{ q.high_label }}
+        </p>
+        <div style="display:flex; gap:1rem;">
+          {% for n in [1, 2, 3, 4, 5] %}
+            <label>
+              <input type="radio" name="{{ q.key }}" value="{{ n }}" required>
+              {{ n }}
+            </label>
+          {% endfor %}
+        </div>
+      {% elif q.type == "text" %}
+        <p style="color:#666; font-size:0.9em; margin: 0.3rem 0;">Optional.</p>
+        <textarea name="{{ q.key }}" rows="4" cols="80"
+                  style="width:100%; font-family:inherit;"></textarea>
+      {% endif %}
+    </fieldset>
+  {% endfor %}
+
+  <p>
+    <button type="submit" style="font-size:1.1rem; padding:0.5rem 1.5rem;">
+      Submit (anonymously)
+    </button>
+  </p>
+</form>
+{% endblock %}

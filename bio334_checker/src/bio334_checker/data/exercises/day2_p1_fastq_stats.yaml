@@ -1,0 +1,94 @@
+# Day 2, Part 1 — Advanced Exercise 2: FASTQ stats (read count, mean length, GC).
+# Source: https://gist.github.com/masaomi/870f24db57d295eabfd0094b504c2f1b
+
+slug: day2_p1_fastq_stats
+title: Day 2 Part 1, Adv 2 — FASTQ read count / mean length / GC content
+day: 2
+part: 1
+order_index: 3
+source_gist_url: https://gist.github.com/masaomi/870f24db57d295eabfd0094b504c2f1b
+
+description_md: |
+  ## Day 2, Part 1 — Advanced Exercise 2: FASTQ stats
+
+  ### Goal
+  Read a FASTQ file and compute three statistics:
+  1. **Total number of reads**
+  2. **Average read length**
+  3. **GC content** across all reads
+
+  ### FASTQ format reminder
+  Each read is **exactly four lines**:
+
+  ```
+  @HWI-ST1357:71:D2FNTACXX:... 1:N:0:CGATGT   <- Line 1: identifier (starts with @)
+  AGTCTCTCTGCTACCTTCATCGTCTAC...              <- Line 2: nucleotide sequence
+  +                                           <- Line 3: separator (often just '+')
+  @@<DFFFFHHHHHIIJIIJ...                      <- Line 4: per-base quality scores
+  ```
+
+  ### Pitfall — read this twice
+  Line 4 (quality scores) **can start with `@`** because `@` is a
+  valid Phred-+33 quality character. Do **NOT** detect new records
+  by looking for `@` on the first character — you will overcount.
+  Instead rely on the **fixed 4-line-per-record structure** (e.g.
+  a line counter and `line_number % 4`).
+
+  ### Expected output
+
+  ```
+  $ python day2_1_advanced2.py sample.fq
+  Total reads = 250
+  Average read length = 101.0
+  GC content = GC count/total = 0.4575049504950495
+  ```
+
+  ### Input file
+  - `sample.fq` — small FASTQ sample bundled with the checker.
+    250 reads, 101 bp each.
+
+rubric_md: |
+  Score against:
+
+  Required (full credit):
+  1. Detects records by line position (`line_number % 4`), NOT by
+     the `@` prefix — this is explicitly the lesson.
+  2. Counts total reads correctly → 250.
+  3. Measures every Line-2 sequence's length, sums, and divides by
+     250 → 101.0. (Print with `.0` — i.e., float, not int.)
+  4. Counts G + C across every Line-2 sequence, divides by total
+     bases → 0.4575049504950495.
+  5. Prints three labelled lines matching the canonical labels and
+     ordering exactly. Note `GC count/total` (NOT "GC count/total
+     size" or "GC count/genome size" — different exercise).
+  6. Code runs cleanly.
+
+  Partial credit guidance:
+  - Detects records by `line.startswith("@")` and gets 250 anyway
+    by luck of this sample: 70–85; flag that the pitfall would
+    bite on a different sample. The Pitfall callout in the
+    description is the point of this exercise.
+  - Detects by `@` and overcounts: 30–50 — flag the `@` pitfall
+    explicitly and reference the description.
+  - Mean length prints as integer (`101` not `101.0`): 75–85;
+    disagreement banner.
+
+  Style notes:
+  - `enumerate(file)` then `(i % 4) == 1` for the sequence line is
+    the cleanest idiom.
+  - Reading the whole file as a list and slicing `[1::4]` is also
+    valid but less memory-friendly for large FASTQ.
+
+expected_stdout: |
+  Total reads = 250
+  Average read length = 101.0
+  GC content = GC count/total = 0.4575049504950495
+
+argv: ["sample.fq"]
+files_provided: ["sample.fq"]
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 15

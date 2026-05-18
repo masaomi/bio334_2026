@@ -1,0 +1,102 @@
+# Day 1, Part 3 — Exercise 2: Pair-wise comparison with same/diff counts.
+# Source: https://gist.github.com/masaomi/857f8257e4ec9d4fb80557a5890f22a3
+
+slug: day1_p3_pairwise_count
+title: Day 1 Part 3, Ex 2 — pair-wise count of same/different nucleotides
+day: 1
+part: 3
+order_index: 2
+source_gist_url: https://gist.github.com/masaomi/857f8257e4ec9d4fb80557a5890f22a3
+
+description_md: |
+  ## Day 1, Part 3 — Exercise 2: Pair-wise nucleotide counts
+
+  ### Goal
+  Extend Ex 1: for every pair of three sequences, count the
+  positions where they are **same** and where they are **different**,
+  then sum the totals across all pairs.
+
+  ### Template
+
+  ```python
+  seq1 = "ATGC"
+  seq2 = "ATAT"
+  seq3 = "ATGC"
+
+  sequences = [seq1, seq2, seq3]
+
+  total_same = 0
+  total_diff = 0
+  for i in range(0, len(sequences)):
+      for j in range(i + 1, len(sequences)):
+          same = 0
+          diff = 0
+          print(i, sequences[i], j, sequences[j], end="\t")
+          #
+          # Your code here — count same / diff at each position
+          # and update total_same / total_diff
+          #
+
+  print("total same = %d" % total_same)
+  print("total diff = %d" % total_diff)
+  ```
+
+  ### Expected output
+
+  ```
+  $ python day1_3_exercise2.py
+  0 ATGC 1 ATAT	same 2 diff 2
+  0 ATGC 2 ATGC	same 4 diff 0
+  1 ATAT 2 ATGC	same 2 diff 2
+  total same = 8
+  total diff = 4
+  ```
+
+  ### Hint
+  - This needs a **3-level nested loop**: outer pairs (i, j), inner
+    positions (k).
+  - Per-pair `same` + `diff` count gets printed inline, then folded
+    into `total_same` / `total_diff` after the inner loop.
+
+rubric_md: |
+  Score this submission against the following criteria.
+
+  Required (full credit):
+  1. Uses three nested loops (or two loops + a comprehension /
+     `zip` — semantically equivalent counts as full credit).
+  2. Per pair prints `<i> <seq_i> <j> <seq_j>` followed by `\t`
+     and `same <n> diff <m>` matching the canonical layout exactly.
+  3. Accumulates the per-pair counts into `total_same` and
+     `total_diff` and prints both totals on the last two lines.
+  4. The numbers come out as (2/2, 4/0, 2/2) per pair and 8/4
+     totals for the canonical sequences.
+  5. Code runs cleanly.
+
+  Partial credit guidance:
+  - Counts correct but inline output format off (e.g., missing tab,
+    different label): 65–80; the disagreement banner is the lesson.
+  - Off-by-one in pair iteration (e.g., uses `range(len, len)`
+    instead of `range(i+1, len)` and double-counts pairs): 45–60.
+  - Hard-codes the three counts without a real loop: well below
+    LLM_FLOOR.
+
+  Style notes:
+  - At Day-1 stage, an explicit triple-loop is the intended
+    canonical. Comprehensions are fine but call them out as a
+    style choice, not a requirement.
+
+expected_stdout: |
+  0 ATGC 1 ATAT	same 2 diff 2
+  0 ATGC 2 ATGC	same 4 diff 0
+  1 ATAT 2 ATGC	same 2 diff 2
+  total same = 8
+  total diff = 4
+
+argv: []
+files_provided: []
+
+max_score: 100
+pass_threshold: 70
+llm_floor: 40
+allow_nonzero_rc: false
+timeout_s: 10
