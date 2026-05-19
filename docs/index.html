@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BIO334 Practical Bioinformatics — Exercise Checker</title>
+  <!--
+    GitHub Pages entry page for bio334-checker.
+
+    This page is intentionally a thin "register here" landing that
+    submits straight to the production FastAPI host. After the form
+    POST, the browser is on the FastAPI domain and every subsequent
+    link / cookie / session lives there. GitHub Pages only owns this
+    one page.
+
+    To re-point to a different deployment, edit BACKEND_URL below and
+    re-deploy (commit + push; GitHub Pages picks it up automatically).
+  -->
+  <style>
+    :root {
+      --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px;
+      --fs-sm: 13px; --fs-md: 15px; --fs-lg: 17px; --fs-xl: 22px;
+      --c-ink: #1f2328;
+      --c-mute: #6b7280;
+      --c-teach: #b58105;
+      --c-teach-bg: #fff9e0;
+      --c-accent: #2c5282;
+      --c-bg-soft: #f4f6f8;
+    }
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 760px;
+           margin: var(--s4) auto; padding: 0 var(--s2);
+           line-height: 1.55; color: var(--c-ink); font-size: var(--fs-md); }
+    h1 { font-size: var(--fs-xl); margin-top: var(--s3); }
+    h2 { font-size: var(--fs-lg); margin-top: var(--s3); }
+    a  { color: var(--c-accent); }
+    .callout--teach { padding: var(--s2); margin: var(--s2) 0;
+                      border-left: 4px solid var(--c-teach); border-radius: 4px;
+                      background: var(--c-teach-bg); }
+    .callout--teach > strong:first-child { display: block; margin-bottom: 4px; }
+    input[type=text] { padding: 0.4rem; font-size: var(--fs-md); width: 16rem; }
+    button { padding: 0.4rem var(--s2); font-size: var(--fs-md); cursor: pointer;
+             background: var(--c-accent); color: #fff; border: 1px solid var(--c-accent);
+             border-radius: 4px; font-weight: 600; }
+    button:hover { background: #1d3a63; }
+    code { background: var(--c-bg-soft); padding: 0.1rem 0.3rem; border-radius: 3px;
+           font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--fs-sm); }
+    .meta { font-size: var(--fs-sm); color: var(--c-mute); }
+    hr { border: 0; border-top: 1px solid #e3e6ea; margin: var(--s4) 0 var(--s2); }
+  </style>
+</head>
+<body>
+
+<h1>BIO334 Practical Bioinformatics — Exercise Checker</h1>
+
+<div class="callout--teach">
+  <strong>The course pact.</strong>
+  Try the exercise by hand first. Notice where you get stuck — that's the
+  learning. Only then ask the grader (or the hint button) to tell you
+  whether you're right. The tool is a sparring partner, not an oracle.
+</div>
+
+<h2>Welcome</h2>
+
+<p>If this is your first visit, register a display name and you'll receive
+a 4-character handle. Keep your handle (paper memo, QR, or URL); you'll need
+it to come back from another device.</p>
+
+<form id="register-form" method="post">
+  <label>Display name (1–32 characters; this stays in the app's local
+  database and is never written to the chain):
+    <br>
+    <input type="text" name="display_name" maxlength="32" required autofocus>
+  </label>
+  <button type="submit">Register →</button>
+</form>
+
+<h2>Already have a handle?</h2>
+<p class="meta">Type it here, or use your saved QR / URL.</p>
+<form id="login-form" method="get">
+  <input type="text" name="u" maxlength="8" pattern="[a-z0-9-]{1,8}"
+         placeholder="e.g. 8mxr" required>
+  <button type="submit">Continue →</button>
+</form>
+
+<hr>
+
+<p class="meta">
+  This page is served from GitHub Pages and only knows how to send you to
+  the checker at <code id="backend-hint">…</code>. The exercises, grading,
+  leaderboard, and admin tools all live on that FastAPI host.
+  Source: <a href="https://github.com/masaomi/bio334_2026">bio334_2026</a>.
+</p>
+
+<script>
+  // =====================================================================
+  //                           CONFIGURATION
+  //
+  // The only line you need to edit when the deployment host changes.
+  // Both forms below (register + handle-login) and the meta-text URL
+  // example are wired up from this single constant.
+  //
+  // Leave the trailing slash off.
+  // =====================================================================
+  var BACKEND_URL = "https://35.156.151.84.nip.io";
+
+  (function () {
+    var register = document.getElementById('register-form');
+    var login    = document.getElementById('login-form');
+    register.action = BACKEND_URL + "/register";
+    login.action    = BACKEND_URL + "/";
+
+    // Surface the configured host in the help text so students see the
+    // canonical bookmark target.
+    var hint = document.getElementById('backend-hint');
+    if (hint) hint.textContent = BACKEND_URL;
+
+    // Fail loudly if the placeholder host was left in place.
+    if (BACKEND_URL.indexOf('example.uzh.ch') !== -1) {
+      var warn = document.createElement('p');
+      warn.className = 'meta';
+      warn.style.color = '#b42318';
+      warn.textContent = 'Warning: BACKEND_URL still points at the example placeholder. Edit docs/index.html (one line near the bottom) before going live.';
+      register.parentNode.insertBefore(warn, register);
+    }
+  })();
+</script>
+
+</body>
+</html>
