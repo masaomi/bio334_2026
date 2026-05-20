@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" width="720" height="260">
+  <defs>
+    <marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+  </defs>
+  <text x="360" y="28" text-anchor="middle" font-size="15" font-weight="bold">SUSHI MCP server  =  SUSHI  ⨯  FGCZ cluster</text>
+
+  <!-- User / Claude Code -->
+  <rect x="30" y="80" width="150" height="100" fill="#e6f0ff" stroke="#3366aa" rx="8"/>
+  <text x="105" y="108" text-anchor="middle" font-size="13" font-weight="bold">You</text>
+  <text x="105" y="128" text-anchor="middle" font-size="11" fill="#555">via Claude Code</text>
+  <text x="105" y="148" text-anchor="middle" font-size="11" fill="#555">or Codex / etc.</text>
+  <text x="105" y="170" text-anchor="middle" font-size="10" fill="#777" font-style="italic">natural language</text>
+
+  <!-- Arrow -->
+  <line x1="185" y1="130" x2="240" y2="130" stroke="#cc3333" stroke-width="2" marker-end="url(#a4)"/>
+  <text x="212" y="120" text-anchor="middle" font-size="10" fill="#cc3333">MCP</text>
+
+  <!-- SUSHI MCP server -->
+  <rect x="245" y="60" width="220" height="160" fill="#fff2cc" stroke="#cc9933" rx="8"/>
+  <text x="355" y="84" text-anchor="middle" font-size="13" font-weight="bold">SUSHI MCP server</text>
+  <text x="355" y="102" text-anchor="middle" font-size="10" fill="#666" font-style="italic">SUSHI ⨯ FGCZ cluster bridge</text>
+  <line x1="265" y1="115" x2="445" y2="115" stroke="#aaa"/>
+  <text x="355" y="135" text-anchor="middle" font-size="11" font-family="monospace">submit_pipeline()</text>
+  <text x="355" y="153" text-anchor="middle" font-size="11" font-family="monospace">check_job_status()</text>
+  <text x="355" y="171" text-anchor="middle" font-size="11" font-family="monospace">fetch_results()</text>
+  <text x="355" y="189" text-anchor="middle" font-size="11" font-family="monospace">record_provenance()</text>
+  <text x="355" y="208" text-anchor="middle" font-size="10" fill="#555" font-style="italic">+ memory / audit</text>
+
+  <!-- Arrows to SUSHI and Chain -->
+  <line x1="470" y1="110" x2="540" y2="80" stroke="#444" stroke-width="2" marker-end="url(#a4)"/>
+  <line x1="470" y1="170" x2="540" y2="200" stroke="#444" stroke-width="2" marker-end="url(#a4)"/>
+
+  <!-- SUSHI box -->
+  <rect x="545" y="55" width="150" height="60" fill="#e6ffe6" stroke="#3aa03a" rx="6"/>
+  <text x="620" y="80" text-anchor="middle" font-size="13" font-weight="bold">SUSHI</text>
+  <text x="620" y="100" text-anchor="middle" font-size="10" fill="#555">FGCZ pipeline platform</text>
+
+  <!-- FGCZ cluster box -->
+  <rect x="545" y="175" width="150" height="60" fill="#e6f0ff" stroke="#3366aa" rx="6"/>
+  <text x="620" y="200" text-anchor="middle" font-size="13" font-weight="bold">FGCZ cluster</text>
+  <text x="620" y="220" text-anchor="middle" font-size="10" fill="#555">compute infrastructure</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 250" width="720" height="250">
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+  </defs>
+  <rect x="40" y="80" width="160" height="100" fill="#e6f0ff" stroke="#3366aa" rx="8"/>
+  <text x="120" y="108" text-anchor="middle" font-size="14" font-weight="bold">Agent (LLM)</text>
+  <text x="120" y="130" text-anchor="middle" font-size="11" fill="#555">Claude Code</text>
+  <text x="120" y="148" text-anchor="middle" font-size="11" fill="#555">Codex CLI</text>
+  <text x="120" y="166" text-anchor="middle" font-size="11" fill="#555">Antigravity</text>
+  <line x1="205" y1="115" x2="335" y2="115" stroke="#cc3333" stroke-width="2" marker-end="url(#a3)"/>
+  <line x1="335" y1="145" x2="205" y2="145" stroke="#cc3333" stroke-width="2" marker-end="url(#a3)"/>
+  <text x="270" y="105" text-anchor="middle" font-size="11" fill="#cc3333" font-weight="bold">call tool</text>
+  <text x="270" y="165" text-anchor="middle" font-size="11" fill="#cc3333" font-weight="bold">return result</text>
+  <text x="270" y="45" text-anchor="middle" font-size="13" font-weight="bold" fill="#cc3333">MCP protocol</text>
+  <text x="270" y="63" text-anchor="middle" font-size="10" fill="#555">(Model Context Protocol, 2024)</text>
+  <rect x="340" y="60" width="200" height="140" fill="#fff2cc" stroke="#cc9933" rx="8"/>
+  <text x="440" y="82" text-anchor="middle" font-size="13" font-weight="bold">MCP server</text>
+  <text x="440" y="100" text-anchor="middle" font-size="11" fill="#555">(a program you run)</text>
+  <line x1="360" y1="110" x2="520" y2="110" stroke="#aaa"/>
+  <text x="440" y="128" text-anchor="middle" font-size="11" font-family="monospace">def read_file(path): ...</text>
+  <text x="440" y="148" text-anchor="middle" font-size="11" font-family="monospace">def run_blast(seq): ...</text>
+  <text x="440" y="168" text-anchor="middle" font-size="11" font-family="monospace">def fetch_vcf(id): ...</text>
+  <text x="440" y="188" text-anchor="middle" font-size="11" fill="#555" font-style="italic">...your own functions</text>
+  <rect x="570" y="80" width="130" height="100" fill="#e6ffe6" stroke="#3aa03a" rx="8"/>
+  <text x="635" y="105" text-anchor="middle" font-size="13" font-weight="bold">Agent Skills</text>
+  <text x="635" y="125" text-anchor="middle" font-size="11" fill="#555">bundled know-how</text>
+  <text x="635" y="143" text-anchor="middle" font-size="11" fill="#555">(prompts + tools</text>
+  <text x="635" y="159" text-anchor="middle" font-size="11" fill="#555">+ examples)</text>
+</svg>
