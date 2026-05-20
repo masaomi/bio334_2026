@@ -49,11 +49,6 @@ Note
 
 * [bio334_day1_part1.ipynb](https://colab.research.google.com/github/masaomi/bio334_2026/blob/main/jupyter_notebooks/bio334_day1_part1.ipynb)
 
-## PDF
-
-* [bio334_day1_part1.pdf](https://github.com/masaomi/bio334_2026/blob/main/pdf/bio334_day1_part1.pdf)
-
-
 ## Recommended Python Learning Resources (2026)
 
 ### Interactive Courses & Tutorials
