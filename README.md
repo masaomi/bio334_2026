@@ -54,6 +54,7 @@ Note
 
 - Day1 Part1: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
 - Day1 Part2: https://gist.github.com/masaomi/b2f52f4723757d5fd1b93ed422f81923
+- Day1 Part3: https://gist.github.com/masaomi/857f8257e4ec9d4fb80557a5890f22a3
 
 ## Recommended Python Learning Resources (2026)
 
