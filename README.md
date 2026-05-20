@@ -31,7 +31,7 @@ Directories
 **Day1** | &nbsp; 
 -------|-------
 13.00- | **Quick Python review** [bio334_day1_part1.ipynb](jupyter_notebooks/bio334_day1_part1.ipynb)
-14.00- | **Two sequences comparison**
+14.00- | **Two sequences comparison** [bio334_day1_part2.ipynb](jupyter_notebooks/bio334_day1_part2.ipynb)
 15.00- | **Nucleotide diversity1**
  &nbsp;| &nbsp;
 **Day2** | &nbsp; 
@@ -47,10 +47,14 @@ Directories
 Note
 * You need a google account
 
-## Exercises
-- Day1 Part1: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
-
 * [bio334_day1_part1.ipynb](https://colab.research.google.com/github/masaomi/bio334_2026/blob/main/jupyter_notebooks/bio334_day1_part1.ipynb)
+* [bio334_day1_part2.ipynb](https://colab.research.google.com/github/masaomi/bio334_2026/blob/main/jupyter_notebooks/bio334_day1_part1.ipynb)
+
+## Exercises
+
+- Day1 Part1: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
+- Day1 Part2: https://gist.github.com/masaomi/b2f52f4723757d5fd1b93ed422f81923
+
 
 ## Recommended Python Learning Resources (2026)
 
