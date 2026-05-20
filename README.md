@@ -47,6 +47,9 @@ Directories
 Note
 * You need a google account
 
+## Exercises
+- Day1 Part1: https://gist.github.com/masaomi/75ac75aa49d3603697e24864b2345d4d
+
 * [bio334_day1_part1.ipynb](https://colab.research.google.com/github/masaomi/bio334_2026/blob/main/jupyter_notebooks/bio334_day1_part1.ipynb)
 
 ## Recommended Python Learning Resources (2026)
