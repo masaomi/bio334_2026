@@ -1,1 +1,3 @@
 bio334_checker/
+.DS_Store
+jupyter_notebooks/.ipynb_checkpoints/
