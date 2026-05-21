@@ -35,7 +35,7 @@ Directories
 15.00- | **Nucleotide diversity1** [bio334_day1_part3.ipynb](jupyter_notebooks/bio334_day1_part3.ipynb)
  &nbsp;| &nbsp;
 **Day2** | &nbsp; 
-9.00-12.00 | **Nucleotide diversity2** [bio334_day2_part1.ipynb](jupyter_notebooks/bio334_day2_part1.ipynb)
+9.00-12.00 | **Nucleotide diversity2** [bio334_day2_part1.ipynb](jupyter_notebooks/bio334_day2_part1.ipynb) [bio334_day2_part2.ipynb](jupyter_notebooks/bio334_day2_part2.ipynb)
 13.00-15.00 | **Tajima's D calculation1**
 15.00-17.00 | **Tajima's D calculation2**
  &nbsp;| &nbsp;
