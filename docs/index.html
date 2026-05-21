@@ -37,6 +37,10 @@
                       border-left: 4px solid var(--c-teach); border-radius: 4px;
                       background: var(--c-teach-bg); }
     .callout--teach > strong:first-child { display: block; margin-bottom: 4px; }
+    .callout--data  { padding: var(--s2); margin: var(--s2) 0;
+                      border-left: 4px solid #6b7280; border-radius: 4px;
+                      background: var(--c-bg-soft); font-size: var(--fs-sm); color: #444; }
+    .callout--data > strong:first-child { display: block; margin-bottom: 4px; color: var(--c-ink); }
     input[type=text] { padding: 0.4rem; font-size: var(--fs-md); width: 16rem; }
     button { padding: 0.4rem var(--s2); font-size: var(--fs-md); cursor: pointer;
              background: var(--c-accent); color: #fff; border: 1px solid var(--c-accent);
@@ -64,6 +68,17 @@
 <p>If this is your first visit, register a display name and you'll receive
 a 4-character handle. Keep your handle (paper memo, QR, or URL); you'll need
 it to come back from another device.</p>
+
+<div class="callout--data">
+  <strong>Data handling.</strong>
+  By registering you acknowledge that (1) your display name, 4-character
+  handle, and code submissions are stored by this app; (2) submitted code is
+  sent to AWS Bedrock (EU region; not used by AWS or the model provider to
+  train models) for automated grading; (3) your handle and submission
+  progress — but not your code — are recorded on an immutable chain for
+  post-course attestation; (4) data is kept until the end of the semester.
+  To request deletion or correction, contact the course instructor.
+</div>
 
 <form id="register-form" method="post">
   <label>Display name (1–32 characters; this stays in the app's local
