@@ -1,0 +1,82 @@
+{
+  "description": "BIO334 course data files for exercises",
+  "files": [
+    {
+      "path": "examples/example_sequences.fa",
+      "description": "4 sequences (~51bp each) with scattered SNPs for Day 1 exercises",
+      "size_bytes": 268
+    },
+    {
+      "path": "examples/two_sequences.fa",
+      "description": "2 sequences (20bp each) for Day 1 Part 2 pairwise comparison",
+      "size_bytes": 62
+    },
+    {
+      "path": "examples/test_sequences.fa",
+      "description": "4 sequences (10bp each) with known pi for verification. Pairwise diffs: (1,2)=1, (1,3)=1, (1,4)=0, (2,3)=2, (2,4)=1, (3,4)=1. Sum=6, pairs=6, avg=1.0. Expected pi = 1.0/10 = 0.1",
+      "size_bytes": 82
+    },
+    {
+      "path": "examples/AT2G19110_reference.fa",
+      "description": "AT2G19110 (HMA4) reference sequence from A. kamchatica, used with VCF files in final exam exercises",
+      "size_bytes": 2902
+    },
+    {
+      "path": "examples/halleri/AT2G19010.fasta",
+      "description": "A. kamchatica halleri-origin homoeolog alignment for gene AT2G19010 (20 accessions)",
+      "size_bytes": 13504
+    },
+    {
+      "path": "examples/halleri/AT2G19150.fasta",
+      "description": "A. kamchatica halleri-origin homoeolog alignment for gene AT2G19150 (20 accessions)",
+      "size_bytes": 14884
+    },
+    {
+      "path": "examples/halleri/kamMAG.vcf",
+      "description": "VCF file for accession kamMAG, halleri-origin SNPs relative to AT2G19110 reference",
+      "size_bytes": 4800
+    },
+    {
+      "path": "examples/halleri/kamALK.vcf",
+      "description": "VCF file for accession kamALK, halleri-origin SNPs relative to AT2G19110 reference",
+      "size_bytes": 4800
+    },
+    {
+      "path": "examples/lyrata/kamMAG.vcf",
+      "description": "VCF file for accession kamMAG, lyrata-origin SNPs relative to AT2G19110 reference",
+      "size_bytes": 4800
+    },
+    {
+      "path": "examples/lyrata/kamALK.vcf",
+      "description": "VCF file for accession kamALK, lyrata-origin SNPs relative to AT2G19110 reference",
+      "size_bytes": 4800
+    }
+  ],
+  "large_datasets": [
+    {
+      "name": "A. kamchatica HMA4 halleri-origin homoeolog alignments (full set)",
+      "source": "data/HMA4_aligned_fasta_Ahal_origin.tgz",
+      "note": "Download separately. 13 gene FASTA files, ~14KB tarball. Also available extracted in answers/HMA4_aligned_fasta_Ahal_origin/"
+    },
+    {
+      "name": "A. kamchatica HMA4 lyrata-origin homoeolog alignments (full set)",
+      "source": "data/HMA4_aligned_fasta_Alyr_origin.tgz",
+      "note": "Download separately. ~16KB tarball. Not extracted in this repo."
+    },
+    {
+      "name": "A. kamchatica HMA4 VCFs and reference (all 20 accessions, halleri + lyrata)",
+      "source": "final_exam/Final_exam_2025/answers/Akam_HMA4_VCFs_and_reference_fasta/",
+      "note": "Download separately. Contains AT2G19110.fa reference and vcfs/halleri/ + vcfs/lyrata/ directories with 20 VCF files each."
+    },
+    {
+      "name": "A. thaliana SNPs",
+      "source": "data/Athaliana_SNPs.tgz",
+      "note": "Download separately. ~18MB tarball."
+    },
+    {
+      "name": "A. thaliana chromosome FASTA files",
+      "source": "data/athal_chr1.fa.gz, data/athal_chr2.fa.gz, data/athal_chr3.fa.gz, data/athal_genome.fa.gz",
+      "note": "Download separately. Compressed genome files, 6-36MB each."
+    }
+  ]
+}

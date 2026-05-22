@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bio334-teaching"
+version = "0.1.0"
+description = "BIO334 Teaching Chain — Learn Python through population genetics with AI guidance"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Masaomi Hatakeyama", email = "masaomi.hatakeyama@fgcz.uzh.ch"},
+]
+keywords = ["bioinformatics", "teaching", "population-genetics", "mcp", "ai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "fastapi>=0.104",
+    "uvicorn>=0.24",
+    "anthropic>=0.40",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+mcp = ["mcp[cli]>=1.0"]
+all = ["bio334-teaching[mcp]"]
+
+[project.scripts]
+bio334-teaching = "bio334_teaching.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bio334_teaching = [
+    "knowledge/*.md",
+    "knowledge/summaries/*.md",
+    "knowledge/manifest.json",
+    "data/**/*",
+    "static/**/*",
+]

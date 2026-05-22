@@ -1,0 +1,99 @@
+{
+  "version": "1.0",
+  "exported_at": "2026-03-12T00:00:00Z",
+  "source": "kairos-chain L1 knowledge layer",
+  "instruction_mode": "bio334_python_teaching",
+  "skills": [
+    {
+      "name": "agentic_coding_pedagogy",
+      "description": "Programming education philosophy and methodology for the Agentic Coding era -- skills and strategies for teaching in an age of AI-human collaboration",
+      "version": "1.1",
+      "tags": ["pedagogy", "agentic-coding", "education", "philosophy", "teaching-strategy"],
+      "has_summary": true
+    },
+    {
+      "name": "bio334_curriculum_map",
+      "description": "BIO334 Practical Bioinformatics curriculum structure map -- progressive learning design from Day 1 to Day 3 + Final Exam with skill dependency graph",
+      "version": "1.1",
+      "tags": ["curriculum", "bio334", "teaching", "structure", "progression", "population-genetics"],
+      "has_summary": true
+    },
+    {
+      "name": "bio334_timetable",
+      "description": "BIO334 minute-level timetable -- lecture, hands-on, checkpoint, discussion, and break schedules for a 3-day intensive module",
+      "version": "1.0",
+      "tags": ["timetable", "schedule", "bio334", "teaching", "time-management"],
+      "has_summary": true
+    },
+    {
+      "name": "popgen_nucleotide_diversity",
+      "description": "Nucleotide diversity (pi) -- definition, mathematics, algorithm, biological meaning, and teaching checkpoints",
+      "version": "1.1",
+      "tags": ["population-genetics", "nucleotide-diversity", "pi", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "popgen_tajimas_d",
+      "description": "Tajima's D -- theory, calculation procedure, biological interpretation, and connection to the Wright-Fisher model",
+      "version": "1.1",
+      "tags": ["population-genetics", "tajimas-d", "neutrality-test", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "popgen_segregating_sites",
+      "description": "Segregating sites -- SNP detection algorithm and Watterson's estimator theta_w",
+      "version": "1.1",
+      "tags": ["population-genetics", "segregating-sites", "snp", "theta-w", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "popgen_wright_fisher",
+      "description": "Wright-Fisher model -- population genetics simulation, genetic drift, and numerical verification of neutral theory",
+      "version": "1.1",
+      "tags": ["population-genetics", "wright-fisher", "simulation", "genetic-drift", "neutral-theory", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "akamchatica_biology",
+      "description": "Arabidopsis kamchatica -- allotetraploid biology, HMA4 gene, and homoeolog analysis context",
+      "version": "1.1",
+      "tags": ["arabidopsis", "kamchatica", "allotetraploid", "homoeolog", "hma4", "population-genetics", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "bioinformatics_file_formats",
+      "description": "Bioinformatics file formats -- FASTA and VCF structure and parsing strategy",
+      "version": "1.1",
+      "tags": ["bioinformatics", "fasta", "vcf", "file-formats", "parsing", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "python_basics_for_bio",
+      "description": "Python basics -- minimum conceptual understanding for bioinformatics in the Agentic Coding era",
+      "version": "1.1",
+      "tags": ["python", "basics", "bioinformatics", "data-structures", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "python_file_io_parsing",
+      "description": "File I/O -- FASTA/VCF parsing, sys.argv, and separation of data from code",
+      "version": "1.1",
+      "tags": ["python", "file-io", "fasta", "vcf", "parsing", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "python_functions_modules",
+      "description": "Functions and modules -- reusability, abstraction, and modularization patterns",
+      "version": "1.1",
+      "tags": ["python", "functions", "modules", "abstraction", "reusability", "teaching", "bio334"],
+      "has_summary": true
+    },
+    {
+      "name": "python_batch_processing",
+      "description": "Batch processing -- glob, os.system, and shell script patterns for bulk analysis",
+      "version": "1.1",
+      "tags": ["python", "batch-processing", "glob", "shell-script", "automation", "teaching", "bio334"],
+      "has_summary": true
+    }
+  ]
+}

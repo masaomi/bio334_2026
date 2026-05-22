@@ -1,0 +1,13 @@
+# User workspace files (created at runtime)
+src/bio334_teaching/workspace/*
+!src/bio334_teaching/workspace/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# Progress data
+progress_data/

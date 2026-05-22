@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIO334 - Learn Python for Population Genetics</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  <!-- CodeMirror 6 from CDN -->
+  <script type="module">
+    try {
+      const cmModule = await import("https://cdn.jsdelivr.net/npm/codemirror@6/dist/index.js");
+      const cmLangPython = await import("https://cdn.jsdelivr.net/npm/@codemirror/lang-python@6/dist/index.js");
+      const cmTheme = await import("https://cdn.jsdelivr.net/npm/@codemirror/theme-one-dark@6/dist/index.js");
+      const cmView = await import("https://cdn.jsdelivr.net/npm/@codemirror/view@6/dist/index.js");
+      const cmState = await import("https://cdn.jsdelivr.net/npm/@codemirror/state@6/dist/index.js");
+      window._CM = {
+        ...cmModule,
+        python: cmLangPython.python,
+        oneDark: cmTheme.oneDark,
+        Decoration: cmView.Decoration,
+        ViewPlugin: cmView.ViewPlugin,
+        StateEffect: cmState.StateEffect,
+        StateField: cmState.StateField,
+        EditorView: cmView.EditorView,
+      };
+      window.dispatchEvent(new Event("codemirror-ready"));
+    } catch (e) {
+      console.warn("CodeMirror CDN failed, using textarea fallback:", e);
+      window._CM = null;
+      window.dispatchEvent(new Event("codemirror-ready"));
+    }
+  </script>
+</head>
+<body>
+  <!-- Skip link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Onboarding overlay -->
+  <div id="onboarding-overlay" class="overlay" role="dialog" aria-modal="true" aria-label="Welcome to BIO334" hidden>
+    <div class="overlay-content">
+      <!-- Steps inserted by onboarding.js -->
+    </div>
+  </div>
+
+  <!-- App header -->
+  <header class="app-header" role="banner">
+    <div class="header-left">
+      <button id="btn-toggle-timeline" class="icon-btn" aria-label="Toggle timeline sidebar" title="Toggle timeline">
+        <span aria-hidden="true">&#9776;</span>
+      </button>
+      <h1 class="app-title">BIO334 <span class="subtitle">Python for Population Genetics</span></h1>
+    </div>
+    <div class="header-right">
+      <span id="connection-status" class="status-dot connected" aria-label="Connected" title="Connected"></span>
+      <button id="btn-progress" class="icon-btn" aria-label="View progress" title="View learning progress">
+        <span aria-hidden="true">&#9733;</span>
+      </button>
+      <button id="btn-settings" class="icon-btn" aria-label="Settings" title="Settings">
+        <span aria-hidden="true">&#9881;</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile tab bar -->
+  <nav class="mobile-tabs" role="tablist" aria-label="Main navigation">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-chat" data-panel="chat">Chat</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-editor" data-panel="editor">Code</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-timeline" data-panel="timeline">Timeline</button>
+  </nav>
+
+  <!-- Main layout -->
+  <main id="main-content" class="app-layout">
+    <!-- Timeline sidebar -->
+    <aside id="panel-timeline" class="panel panel-timeline" role="tabpanel" aria-label="Course timeline">
+      <div class="panel-header">
+        <h2>Course Timeline</h2>
+      </div>
+      <div id="timeline-content" class="timeline-list">
+        <p class="timeline-loading">Loading schedule...</p>
+      </div>
+    </aside>
+
+    <!-- Code editor + output (center) -->
+    <section id="panel-editor" class="panel panel-editor" role="tabpanel" aria-label="Code editor and output" hidden>
+      <div class="panel-header">
+        <h2>Code Editor</h2>
+        <div class="editor-actions">
+          <span class="shortcut-hint" id="shortcut-hint"></span>
+          <button id="btn-run" class="btn btn-run" aria-label="Run code" title="Run code">
+            <span aria-hidden="true">&#9654;</span> Run
+          </button>
+          <button id="btn-clear-output" class="btn btn-secondary" aria-label="Clear output">Clear</button>
+          <span class="btn-separator" aria-hidden="true"></span>
+          <button id="btn-stash" class="btn btn-secondary" aria-label="Save code to workspace" title="Save to workspace (Cmd+S)">
+            Save
+          </button>
+          <button id="btn-stash-load" class="btn btn-secondary" aria-label="Load from workspace" title="Load a file from workspace into editor">
+            Restore
+          </button>
+          <span class="btn-separator" aria-hidden="true"></span>
+          <button id="btn-download" class="btn btn-secondary" aria-label="Download as .py file" title="Download to local file">
+            <span aria-hidden="true">&#8615;</span> Download
+          </button>
+          <button id="btn-upload" class="btn btn-secondary" aria-label="Load code from file" title="Load a .py file">
+            <span aria-hidden="true">&#8613;</span> Upload
+          </button>
+          <input type="file" id="file-load-input" accept=".py,.txt" hidden>
+          <button id="btn-reset-code" class="btn btn-secondary" aria-label="Reset code">Reset</button>
+        </div>
+      </div>
+      <div class="editor-args">
+        <label for="code-args" class="args-label" title="Command-line arguments passed to your script (sys.argv)">Args:</label>
+        <input type="text" id="code-args" class="args-input" placeholder="e.g. sequences.fasta" aria-label="Command-line arguments (sys.argv)" spellcheck="false">
+        <span class="args-hint" id="args-hint"></span>
+      </div>
+      <div class="editor-container">
+        <div id="editor-wrapper" class="editor-wrapper">
+          <textarea id="code-input" class="code-textarea" aria-label="Python code editor" placeholder="# Write your Python code here..." spellcheck="false"></textarea>
+        </div>
+        <div class="resize-handle" aria-hidden="true"></div>
+        <div id="output-panel" class="output-panel" role="log" aria-label="Code output" aria-live="polite">
+          <div class="output-header">
+            <span>Output</span>
+            <span id="execution-time" class="execution-time" hidden></span>
+          </div>
+          <pre id="output-content" class="output-content"><span class="output-placeholder">Output will appear here when you run your code.</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resize handle between editor and chat -->
+    <div id="chat-resize-handle" class="panel-chat-resize" aria-hidden="true" title="Drag to resize"></div>
+
+    <!-- Chat panel -->
+    <section id="panel-chat" class="panel panel-chat" role="tabpanel" aria-label="Chat with teaching assistant">
+      <div class="panel-header">
+        <h2>Teaching Assistant</h2>
+        <div class="chat-header-actions">
+          <button id="btn-save-session" class="btn btn-sm" aria-label="Save session" title="Save session (chat log + progress)">
+            <span aria-hidden="true">&#128190;</span> Save
+          </button>
+          <button id="btn-resume-session" class="btn btn-sm" aria-label="Resume previous session" title="Resume from last session">
+            <span aria-hidden="true">&#9654;</span> Resume
+          </button>
+          <button id="btn-export" class="btn btn-sm" aria-label="Export" title="Export chat log or summary">
+            <span aria-hidden="true">&#11015;</span> Export
+          </button>
+          <button id="btn-progress-inline" class="btn btn-sm" aria-label="View progress" title="View learning progress">
+            <span aria-hidden="true">&#9733;</span> Progress
+          </button>
+        </div>
+      </div>
+      <div id="chat-messages" class="chat-messages" role="log" aria-label="Chat messages" aria-live="polite">
+        <!-- Messages inserted by chat.js -->
+      </div>
+      <div id="model-indicator" class="model-indicator" style="display:none;"></div>
+      <form id="chat-form" class="chat-input-area" aria-label="Send a message">
+        <label for="chat-input" class="sr-only">Type your message</label>
+        <textarea id="chat-input" class="chat-input" placeholder="Ask a question or type a command..." rows="2" aria-label="Message input"></textarea>
+        <button type="submit" id="btn-send" class="btn btn-send" aria-label="Send message">
+          <span aria-hidden="true">&#10148;</span> Send
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Status bar -->
+  <footer class="status-bar" role="status" aria-label="Current status">
+    <span id="status-day" class="status-item">Day: --</span>
+    <span class="status-separator" aria-hidden="true">|</span>
+    <span id="status-phase" class="status-item">Phase: --</span>
+    <span class="status-separator" aria-hidden="true">|</span>
+    <span id="status-topic" class="status-item">Topic: --</span>
+  </footer>
+
+  <!-- Settings modal -->
+  <div id="settings-modal" class="overlay" role="dialog" aria-modal="true" aria-label="Settings" hidden>
+    <div class="overlay-content settings-content">
+      <h2>Settings</h2>
+      <div class="form-group">
+        <label for="settings-token">Course Token</label>
+        <input type="text" id="settings-token" class="form-input" placeholder="Enter your course token">
+      </div>
+      <div class="form-group">
+        <label for="settings-session">Session ID</label>
+        <input type="text" id="settings-session" class="form-input" readonly>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-save-settings" class="btn btn-primary">Save</button>
+        <button id="btn-close-settings" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress modal -->
+  <div id="progress-modal" class="overlay" role="dialog" aria-modal="true" aria-label="Learning Progress" hidden>
+    <div class="overlay-content progress-content">
+      <div class="progress-header">
+        <h2>Learning Progress</h2>
+        <button id="btn-close-progress" class="icon-btn" aria-label="Close">&times;</button>
+      </div>
+      <div id="progress-body" class="progress-body">
+        <p class="progress-loading">Loading progress...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts (no modules, plain JS) -->
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/chat.js"></script>
+  <script src="/static/js/editor.js"></script>
+  <script src="/static/js/timeline.js"></script>
+  <script src="/static/js/onboarding.js"></script>
+  <script src="/static/js/progress.js"></script>
+</body>
+</html>

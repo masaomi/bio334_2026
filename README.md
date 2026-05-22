@@ -40,7 +40,7 @@ Directories
 15.00-17.00 | **Tajima's D calculation2** [bio334_day2_part5.ipynb](jupyter_notebooks/bio334_day2_part5.ipynb)
  &nbsp;| &nbsp;
 **Day3** | &nbsp; 
-9.00-12.00 | **Advanced exercise**
+9.00-12.00 | **Advanced exercise** [bio334_day3.ipynb](jupyter_notebooks/bio334_day3.ipynb)
 
 ## Google Colab
 
