@@ -70,9 +70,6 @@ Note
 - Day2 Part5: https://gist.github.com/masaomi/29c3325edd802eadb61a213140f33c93
 - Day3 Final: https://gist.github.com/masaomi/1397a32c4b870f7ab7e92f479770788d
 
-A final exam in the past (Note: This will be deleted before the final exam)
-* https://gist.github.com/masaomi/a1ccaad69f3c004150d36e6bf8fe2dcf
-
 ## Recommended Python Learning Resources (2026)
 
 ### Interactive Courses & Tutorials
